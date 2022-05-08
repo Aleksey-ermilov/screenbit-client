@@ -58,19 +58,21 @@ const Repair = () => {
                     <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
                 </div>
             </Header>
-            {
-                cards.map( item =>
-                    <div onClick={() => setIsShow(true)} key={item.title}>
-                        <div className='box-repair d-flex justify-content-around '>
-                            <><Image height={60} width={60} src={item.img} /></>
-                            <div className='text-main-color'>
-                                <div className='fw-bold font-s-28'>{item.title}</div>
-                                <div className='font-s-14'>{item.subtitle}</div>
+            <div className='head-margin-80'>
+                {
+                    cards.map( item =>
+                        <div onClick={() => setIsShow(true)} key={item.title}>
+                            <div className='box-repair d-flex justify-content-around '>
+                                <><Image height={60} width={60} src={item.img} /></>
+                                <div className='text-main-color'>
+                                    <div className='fw-bold font-s-28'>{item.title}</div>
+                                    <div className='font-s-14'>{item.subtitle}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-            }
+                    )
+                }
+            </div>
 
             <ModalRepair show={isShow} onHide={() => setIsShow(false)} />
         </div>

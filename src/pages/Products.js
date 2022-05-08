@@ -67,7 +67,7 @@ const Products = () => {
     }
     return (
         <div className='margin-bottom-footer'>
-            <Header className='header-bar  ' >
+            <Header className='header-bar head ' >
                 <div >
                     <div className='d-flex justify-content-between align-items-center mb-3'>
                         <Form.Control
@@ -140,7 +140,7 @@ const Products = () => {
                 </div>
             </Header>
 
-            <div className='p-3 d-flex flex-wrap '>
+            <div className='p-3 d-flex flex-wrap justify-content-around head-margin-150' >
                 {
                     searchFunc(productsFilterByCategories).length ?
                         searchFunc(productsFilterByCategories).map( item =>

@@ -55,28 +55,28 @@ const MapYandex = () => {
                         <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
                     </div>
                 </Header>
-                    <div>
-                        <div id="map"></div>
-                        <Map
-                            modules={["package.full"]}
-                            style={styles}
-                            defaultState={{
-                                center: [55.751574, 37.573856],
-                                zoom: 10,
-                            }}
-                            onClick={(e) => { // устанавливаем маркер и записываем координаты
-                                handlerSetMarker(e)
-                            }}
-                            instanceRef={myMap}
-                            onLoad={maps => {
-                                loadMap.current=maps
-                            }}
-                        >
-                            <Placemark geometry={marker} />
-                        </Map>
-                    </div>
-
+                <div >
+                    <div id="map"></div>
+                    <Map
+                        modules={["package.full"]}
+                        style={styles}
+                        defaultState={{
+                            center: [55.751574, 37.573856],
+                            zoom: 10,
+                        }}
+                        onClick={(e) => { // устанавливаем маркер и записываем координаты
+                            handlerSetMarker(e)
+                        }}
+                        instanceRef={myMap}
+                        onLoad={maps => {
+                            loadMap.current=maps
+                        }}
+                    >
+                        <Placemark geometry={marker} />
+                    </Map>
                 </div>
+
+            </div>
 
         </YMaps>
     );

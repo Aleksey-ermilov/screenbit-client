@@ -9,7 +9,7 @@ import {HISTORY_PRODUCT_ROUTER, REPAIR_ROUTER} from "../consts";
 const Settings = () => {
     const navigate = useNavigate();
     return (
-        <div className='margin-bottom-footer '>
+        <div className='margin-bottom-address'>
             <Header className='header-bar mb-4  '  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div className='  '>
@@ -17,7 +17,7 @@ const Settings = () => {
                     </div>
                 </div>
             </Header>
-            <div className='px-3'>
+            <div className='px-3 head-margin-80'>
                 <div>
                     <div className='mb-3 font-s-20 d-flex justify-content-between align-items-center'>
                         <div>Уведомления</div>
@@ -39,7 +39,7 @@ const Settings = () => {
                 <div>
                     <Button
                         onClick={() => navigate(REPAIR_ROUTER)}
-                        className='p-3 secondary  btn-exit font-s-18'
+                        className='p-2 secondary  btn-exit font-s-22'
                     >Выйти</Button>
                 </div>
             </div>

@@ -1,17 +1,19 @@
 import React from 'react';
 import { Image, ListGroup, Tab} from "react-bootstrap";
 import {useNavigate } from "react-router-dom";
+import {useSelector,useDispatch} from 'react-redux'
 
 import Header from "../components/Header";
 import ListCardMessages from "../components/ListCardMessages";
 
 import person from "../icons/png/person.png";
-import phone from "../icons/png/img-phone.png";
 
 import {MESSAGE_ROUTER, USER_ROUTER} from "../consts";
 
 const Messages = () => {
     const navigate = useNavigate();
+
+    const { user, messages} = useSelector( state => state.user)
 
     const messagesRepair = messages.filter( item => item.type === 'repair')
     const messagesOrder = messages.filter( item => item.type === 'order')
@@ -22,6 +24,8 @@ const Messages = () => {
             {
                 state:
                     {
+                        id: item.id,
+                        user_id: user.user_id,
                         mes: item.message,
                         subject: item.subject,
                     }
@@ -31,7 +35,7 @@ const Messages = () => {
 
     return (
         <div className='margin-bottom-footer '>
-            <Header className='header-bar mb-4  '  >
+            <Header className='header-bar '  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div className='  '>
                         Сообщения
@@ -40,7 +44,7 @@ const Messages = () => {
                 </div>
             </Header>
 
-            <div >
+            <div className='head-margin-80'>
                 <Tab.Container defaultActiveKey="#repair">
                     <ListGroup horizontal>
                         <ListGroup.Item action href="#repair" className='z-index-0 font-s-24 pb-2 list-group-mess'>
@@ -74,6 +78,7 @@ const Messages = () => {
 
 export default Messages;
 
+/*
 const messages = [
     {
         id:'1',
@@ -283,4 +288,4 @@ const messages = [
             },
         ]
     },
-]
+]*/

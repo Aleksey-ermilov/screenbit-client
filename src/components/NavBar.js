@@ -15,6 +15,8 @@ import cartActive from '../icons/png/cartActive.png'
 
 import {FAVORITES_ROUTER, PRODUCTS_ROUTER, REPAIR_ROUTER,MESSAGES_ROUTER,CART_ROUTER} from "../consts";
 
+const sizeImg = 23
+
 const NavBar = () => {
     const location = useLocation()
 
@@ -24,8 +26,8 @@ const NavBar = () => {
                 <div >
                     <div >
                         {location.pathname === REPAIR_ROUTER ?
-                            <Image height={29} width={29} src={instrumentsActive} /> :
-                            <Image height={29} width={29} src={instruments} />
+                            <Image height={sizeImg} width={sizeImg} src={instrumentsActive} /> :
+                            <Image height={sizeImg} width={sizeImg} src={instruments} />
                         }
                     </div>
                     <div className={location.pathname === REPAIR_ROUTER ? 'text-main-color' : ''} >Ремонт</div>
@@ -35,8 +37,8 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === PRODUCTS_ROUTER ?
-                            <Image height={29} width={29} src={productActive} /> :
-                            <Image height={29} width={29} src={product} />
+                            <Image height={sizeImg} width={sizeImg} src={productActive} /> :
+                            <Image height={sizeImg} width={sizeImg} src={product} />
                         }
                     </div>
                     <div className={location.pathname === PRODUCTS_ROUTER ? 'text-main-color' : ''} >Каталог</div>
@@ -46,8 +48,8 @@ const NavBar = () => {
                  <div>
                      <div>
                          {location.pathname === FAVORITES_ROUTER ?
-                             <Image height={29} width={29} src={favoritesActive} /> :
-                             <Image height={29} width={29} src={favorites} />
+                             <Image height={sizeImg} width={sizeImg} src={favoritesActive} /> :
+                             <Image height={sizeImg} width={sizeImg} src={favorites} />
                          }
                      </div>
                      <div className={location.pathname === FAVORITES_ROUTER ? 'text-main-color' : ''}>Избранное</div>
@@ -57,8 +59,8 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === MESSAGES_ROUTER ?
-                            <Image height={29} width={29} src={messagesActive} /> :
-                            <Image height={29} width={29} src={messages} />
+                            <Image height={sizeImg} width={sizeImg} src={messagesActive} /> :
+                            <Image height={sizeImg} width={sizeImg} src={messages} />
                         }
                     </div>
                     <div className={location.pathname === MESSAGES_ROUTER ? 'text-main-color' : ''}>Сообщения</div>
@@ -68,8 +70,8 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === CART_ROUTER ?
-                            <Image height={29} width={29} src={cartActive} /> :
-                            <Image height={29} width={29} src={cart} />
+                            <Image height={sizeImg} width={sizeImg} src={cartActive} /> :
+                            <Image height={sizeImg} width={sizeImg} src={cart} />
                         }
                     </div>
                     <div className={location.pathname === CART_ROUTER ? 'my-link' : ''}>Корзина</div>

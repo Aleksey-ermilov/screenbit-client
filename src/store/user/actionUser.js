@@ -3,7 +3,7 @@ import {
     SET_CART_CLICK_ICON,
     SET_COUNT_FAVORITE,
     ADD_CART,
-    DELETE_CART
+    DELETE_CART, ADD_MESSAGE
 } from './types'
 
 export function setCartClickIcon (cart,count) {
@@ -20,6 +20,10 @@ export function addCart (item,count) {
 }
 export function deleteCart (product_id) {
     return { type: DELETE_CART, payload: product_id }
+}
+
+export function addMessage (mes,id,user_id) {
+    return { type: ADD_MESSAGE, payload: {mes,id,user_id} }
 }
 
 /*

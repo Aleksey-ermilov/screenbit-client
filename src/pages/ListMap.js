@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import {Image,Card,Button} from "react-bootstrap";
+import {Image,Button} from "react-bootstrap";
 
 import Header from "../components/Header";
 
@@ -8,7 +8,6 @@ import {MAP_ROUTER, USER_ROUTER} from "../consts";
 
 import person from "../icons/png/person.png";
 import marker from "../icons/png/marker.png";
-import imgDelete from "../icons/png/delete.png";
 import EmptyListMes from "../components/EmptyListMes";
 import AddressCard from "../components/AddressCard";
 
@@ -20,7 +19,7 @@ const ListMap = () => {
     }
     return (
         <div className='margin-bottom-address '>
-            <Header className='header-bar mb-3 head head-z-index-5'  >
+            <Header className='header-bar mb-3 head-z-index-5'  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div className='d-flex align-items-center  '>
                         <><Image height={13} width={13} src={marker} /></>
@@ -30,7 +29,7 @@ const ListMap = () => {
                 </div>
             </Header>
 
-            <div className='px-3  head-margin '>
+            <div className='px-3  head-margin-80 '>
                 {
                     addresses.length ?
                         addresses.map( item =>

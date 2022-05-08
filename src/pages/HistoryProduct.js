@@ -41,7 +41,7 @@ const HistoryProduct = () => {
                 </div>
             </Header>
 
-            <div>
+            <div className='head-margin-80'>
                 {
                     historyProduct.length ? historyProduct.map( item =>
                         <Card

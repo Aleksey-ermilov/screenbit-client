@@ -47,7 +47,7 @@ const User = () => {
                     <Image className='d-inline-block' onClick={() => navigate(SETTING_ROUTER)} height={15} width={15} src={gear} />
                 </div>
             </Header>
-            <div className='px-3 mt-4'>
+            <div className='px-3 head-margin-120' >
                 <UserCard onClick={() => navigate(STATUSORDER_ROUTER)}>
                     <div className='me-3 font-s-20'>Узнать статус заказа</div>
                     <Image src={arrowRight} height={10} width={10} />

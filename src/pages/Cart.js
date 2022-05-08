@@ -61,61 +61,63 @@ const Cart = () => {
                 </div>
             </Header>
 
-            { cart.length ?
-                <div>
-                {
-                     cart.map(item =>
-                            <Card
+            <div className='head-margin-80'>
+                { cart.length ?
+                    <div>
+                        {
+                            cart.map(item =>
+                                <Card
 
-                                className='secondary shadow-mine m-3'
-                                key={item.product_id}
-                            >
-                                <Card.Body>
-                                    <div className='d-flex '>
-                                        <Image
-                                            onClick={() => handlerProductCard(item.product_id)}
-                                            height={100}
-                                            style={{width: '100px'}}
-                                            src={item.img[0]}
-                                            className='img-favorites'
-                                        />
-                                        <div className='mb-4'>
-                                            <div className='d-flex justify-content-between'>
-                                                <Card.Text className='font-s-14 title-favorites'>{item.name}</Card.Text>
-                                                <div className='ms-2'>
-                                                    <Image onClick={() => handlerDelete(item.product_id)} height={15}
-                                                           width={15} src={imgDelete} className=''/>
+                                    className='secondary shadow-mine m-3'
+                                    key={item.product_id}
+                                >
+                                    <Card.Body>
+                                        <div className='d-flex '>
+                                            <Image
+                                                onClick={() => handlerProductCard(item.product_id)}
+                                                height={100}
+                                                style={{width: '100px'}}
+                                                src={item.img[0]}
+                                                className='img-favorites'
+                                            />
+                                            <div className='mb-4'>
+                                                <div className='d-flex justify-content-between'>
+                                                    <Card.Text className='font-s-14 title-favorites'>{item.name}</Card.Text>
+                                                    <div className='ms-2'>
+                                                        <Image onClick={() => handlerDelete(item.product_id)} height={15}
+                                                               width={15} src={imgDelete} className=''/>
+                                                    </div>
                                                 </div>
+                                                <Card.Text
+                                                    className='font-s-12 desc-favorites'>{handlerText(item.desc)}</Card.Text>
                                             </div>
-                                            <Card.Text
-                                                className='font-s-12 desc-favorites'>{handlerText(item.desc)}</Card.Text>
                                         </div>
-                                    </div>
 
-                                    <div className='d-flex justify-content-between '>
+                                        <div className='d-flex justify-content-between '>
 
-                                        <Counter total={+item.count}
-                                                 handlerCount={(count) => handlerCounter(item, count)}/>
+                                            <Counter total={+item.count}
+                                                     handlerCount={(count) => handlerCounter(item, count)}/>
 
-                                        <Card.Text>{item.price}р</Card.Text>
+                                            <Card.Text>{item.price}р</Card.Text>
 
 
-                                    </div>
-                                </Card.Body>
+                                        </div>
+                                    </Card.Body>
 
-                            </Card>
-                        )
+                                </Card>
+                            )
+                        }
+
+                        <Button
+                            onClick={handlerBtnOrder}
+                            className='my-button btn-order-cart p-2 font-s-24 mb-1'
+                        >Заказать</Button>
+
+                    </div>
+                    :
+                    <EmptyListMes/>
                 }
-
-                <Button
-                    onClick={handlerBtnOrder}
-                    className='my-button btn-order-cart p-2 font-s-24 mb-1'
-                >Заказать</Button>
-
             </div>
-                :
-                <EmptyListMes/>
-            }
         </div>
     );
 };

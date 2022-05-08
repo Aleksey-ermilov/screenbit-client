@@ -40,7 +40,7 @@ const Ordering = () => {
                 </div>
             </Header>
 
-            <div className='px-3'>
+            <div className='px-3 head-margin-80'>
                 <div className='mb-3'>
                     <AddressCard item={address} remove={removeAddress} />
                     <Button

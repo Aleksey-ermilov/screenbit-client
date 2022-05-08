@@ -62,7 +62,7 @@ const ProductCard = () => {
                     <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
                 </div>
             </Header>
-            <div className='p-3'>
+            <div className='p-3 head-margin-80'>
                 <Carousel
                     indicators={false}
                     variant="dark"

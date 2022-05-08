@@ -52,7 +52,7 @@ const Favorites = () => {
                 </div>
             </Header>
 
-            <div>
+            <div className='head-margin-80'>
                 {
                     favorites.length ? favorites.map( item =>
                         <Card
