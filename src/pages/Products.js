@@ -1,16 +1,16 @@
 import React, {useState,useRef} from 'react';
 import {useNavigate } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
-import {Image,Form,Dropdown,Card} from "react-bootstrap";
+import {Form,Dropdown,Card} from "react-bootstrap";
 
 import Header from "../components/Header";
 import Loading from "./Loading";
 
-import person from "../icons/png/person.png";
-import favorite from '../icons/png/favoritesActive.png'
-import noFavorite from '../icons/png/no-favorites.png'
-import cart from '../icons/png/cart-product.png'
-import noCart from "../icons/png/no-cart-product.png";
+import Person from "../icons/svgComponents/Person";
+import {FavoritesActiveSvg as Favorites} from "../icons/svgComponents/FavoritesActiveSvg";
+import NoFavorites from "../icons/svgComponents/NoFavorites";
+import CartProduct from "../icons/svgComponents/CartProduct";
+import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
 
 import {PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 
@@ -73,10 +73,12 @@ const Products = () => {
                         <Form.Control
                             value={value}
                             onChange={e => handlerSearchForm(e)}
-                            className='my-form-control big-form-control-modal-s-70pr font-s-12 p-1'
+                            className='my-form-control big-form-control-modal-s-85pr font-s-12 p-1'
                             placeholder={"Поиск"}
                         />
-                        <><Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} /></>
+                        <div onClick={() => navigate(USER_ROUTER)} >
+                            <Person height={15} width={15} />
+                        </div>
                     </div>
                     <div>
                         <Form className='d-flex flex-wrap font-s-12 '>
@@ -155,18 +157,20 @@ const Products = () => {
                                     <div>{item.name}</div>
                                 </div>
                                 <div className='product-card-icon'>
-                                    <Image
-                                        onClick={(e) => handlerAddFavorite(e,item)}
-                                        height={15}
-                                        width={15}
-                                        src={ favorites.find( i => i.product_id === item.product_id) ? favorite : noFavorite}
-                                    />
-                                    <Image
-                                        onClick={(e) => handlerAddCart(e,item)}
-                                        height={15}
-                                        width={15}
-                                        src={ carts.find( i => i.product_id === item.product_id) ? cart : noCart }
-                                    />
+                                    <div onClick={(e) => handlerAddFavorite(e,item)}>
+                                        {
+                                            favorites.find(i => i.product_id === item.product_id) ?
+                                            <Favorites height={20} width={20}/> :
+                                            <NoFavorites height={20} width={20}/>
+                                        }
+                                    </div>
+                                    <div onClick={(e) => handlerAddCart(e,item)}>
+                                        {
+                                            carts.find( i => i.product_id === item.product_id) ?
+                                                <CartProduct height={20} width={20} /> :
+                                                <NoCart height={20} width={20} />
+                                        }
+                                    </div>
                                 </div>
                             </Card.Body>
                         </Card>

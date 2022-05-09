@@ -7,12 +7,12 @@ import Header from "../components/Header";
 import ModalCharacteristics from "../components/modals/ModalCharacteristics";
 import ModalReviews from "../components/modals/ModalReviews";
 
-import marker from "../icons/png/marker.png";
-import person from "../icons/png/person.png";
-import favorite from "../icons/png/favoritesActive.png";
-import noFavorite from "../icons/png/no-favorites.png";
-import noCart from "../icons/png/no-cart-product.png";
-import cart from "../icons/png/cart-product.png";
+import Marker from "../icons/svgComponents/Marker";
+import Person from "../icons/svgComponents/Person";
+import {FavoritesActiveSvg as Favorites} from "../icons/svgComponents/FavoritesActiveSvg";
+import NoFavorites from "../icons/svgComponents/NoFavorites";
+import CartProduct from "../icons/svgComponents/CartProduct";
+import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
 
 import {CART_ROUTER, LIST_MAP_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 import {setCartClickIcon, setFavorites,addCart} from "../store/user/actionUser";
@@ -56,10 +56,12 @@ const ProductCard = () => {
             <Header className='header-bar mb-4 '  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div onClick={() => navigate(LIST_MAP_ROUTER)} className='d-flex align-items-center  '>
-                        <><Image height={13} width={13} src={marker} /></>
+                        <><Marker height={13} width={13} /></>
                         <div className='ms-2'>Укажите город</div>
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)}>
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
             <div className='p-3 head-margin-80'>
@@ -85,19 +87,21 @@ const ProductCard = () => {
                     <h1 className='font-s-22 fw-normal mb-3'>{product.name}</h1>
                     <div className='d-flex justify-content-between'>
                         <div className='font-s-22'>{product.price}р</div>
-                        <div>
-                            <Image
-                                height={30}
-                                width={30}
-                                onClick={handlerAddFavorite}
-                                src={ favorites.find( i => i.product_id === product.product_id) ? favorite : noFavorite}
-                                className='ms-3'
-                            />
-                            <Image
-                                onClick={handlerAddCart}
-                                src={ carts.find( i => i.product_id === product.product_id) ? cart : noCart }
-                                className='ms-3'
-                            />
+                        <div className='d-flex align-items-center'>
+                            <div onClick={handlerAddFavorite} className='me-3'>
+                                {
+                                    favorites.find( i => i.product_id === product.product_id) ?
+                                        <Favorites height={30} width={30} /> :
+                                        <NoFavorites height={30} width={30} />
+                                }
+                            </div>
+                            <div onClick={handlerAddCart}>
+                                {
+                                    carts.find(i => i.product_id === product.product_id) ?
+                                    <CartProduct height={30} width={30}/> :
+                                    <NoCart height={30} width={30}/>
+                                }
+                            </div>
                             <Button
                                 onClick={handlerAddCartBtn}
                                 className='my-button font-s-20 ms-3 '

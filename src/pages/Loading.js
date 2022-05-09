@@ -1,13 +1,12 @@
 import React from 'react';
-import {Image} from "react-bootstrap";
 
-import logo from '../icons/png/logo.png'
+import Logo from "../icons/svgComponents/Logo";
 
 const Loading = () => {
     return (
         <div className='loading d-flex justify-content-center align-items-center'>
              <div >
-                 <Image className='mb-4' src={logo} height={160} width={155} />
+                 <Logo className='mb-4' height={160} width={155} />
                  <div className='font-s-20 secondary-text text-center '>Загрузка...</div>
              </div>
         </div>

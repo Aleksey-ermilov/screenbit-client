@@ -1,17 +1,16 @@
 import React from 'react';
-import {Image,} from "react-bootstrap";
 import {NavLink,useLocation} from 'react-router-dom'
 
-import instruments from '../icons/png/instruments.png'
-import instrumentsActive from '../icons/png/instrumentsActive.png'
-import product from '../icons/png/product.png'
-import productActive from '../icons/png/productActive.png'
-import favorites from '../icons/png/favorites.png'
-import favoritesActive from '../icons/png/favoritesActive.png'
-import messages from '../icons/png/messages.png'
-import messagesActive from '../icons/png/messagesActive.png'
-import cart from '../icons/png/cart.png'
-import cartActive from '../icons/png/cartActive.png'
+import Instruments from "../icons/svgComponents/Instruments";
+import InstrumentsActive from "../icons/svgComponents/InstrumentsActive";
+import ProductSvg from "../icons/svgComponents/ProductSvg";
+import ProductActiveSvg from "../icons/svgComponents/ProductActiveSvg";
+import FavoritesSvg from "../icons/svgComponents/FavoritesSvg";
+import {FavoritesActiveSvg} from "../icons/svgComponents/FavoritesActiveSvg";
+import MessagesSvg from "../icons/svgComponents/MessagesSvg";
+import MessagesActiveSvg from "../icons/svgComponents/MessagesActiveSvg";
+import CartSvg from "../icons/svgComponents/CartSvg";
+import {CartActiveSvg} from "../icons/svgComponents/CartActiveSvg";
 
 import {FAVORITES_ROUTER, PRODUCTS_ROUTER, REPAIR_ROUTER,MESSAGES_ROUTER,CART_ROUTER} from "../consts";
 
@@ -26,8 +25,8 @@ const NavBar = () => {
                 <div >
                     <div >
                         {location.pathname === REPAIR_ROUTER ?
-                            <Image height={sizeImg} width={sizeImg} src={instrumentsActive} /> :
-                            <Image height={sizeImg} width={sizeImg} src={instruments} />
+                            <InstrumentsActive width={sizeImg} height={sizeImg} /> :
+                            <Instruments width={sizeImg} height={sizeImg} />
                         }
                     </div>
                     <div className={location.pathname === REPAIR_ROUTER ? 'text-main-color' : ''} >Ремонт</div>
@@ -37,8 +36,8 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === PRODUCTS_ROUTER ?
-                            <Image height={sizeImg} width={sizeImg} src={productActive} /> :
-                            <Image height={sizeImg} width={sizeImg} src={product} />
+                            <ProductActiveSvg height={sizeImg} width={sizeImg} /> :
+                            <ProductSvg height={sizeImg} width={sizeImg} />
                         }
                     </div>
                     <div className={location.pathname === PRODUCTS_ROUTER ? 'text-main-color' : ''} >Каталог</div>
@@ -48,8 +47,8 @@ const NavBar = () => {
                  <div>
                      <div>
                          {location.pathname === FAVORITES_ROUTER ?
-                             <Image height={sizeImg} width={sizeImg} src={favoritesActive} /> :
-                             <Image height={sizeImg} width={sizeImg} src={favorites} />
+                             <FavoritesActiveSvg height={sizeImg} width={sizeImg} /> :
+                             <FavoritesSvg height={sizeImg} width={sizeImg} />
                          }
                      </div>
                      <div className={location.pathname === FAVORITES_ROUTER ? 'text-main-color' : ''}>Избранное</div>
@@ -59,8 +58,8 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === MESSAGES_ROUTER ?
-                            <Image height={sizeImg} width={sizeImg} src={messagesActive} /> :
-                            <Image height={sizeImg} width={sizeImg} src={messages} />
+                            <MessagesActiveSvg height={sizeImg} width={sizeImg} /> :
+                            <MessagesSvg height={sizeImg} width={sizeImg} />
                         }
                     </div>
                     <div className={location.pathname === MESSAGES_ROUTER ? 'text-main-color' : ''}>Сообщения</div>
@@ -70,11 +69,11 @@ const NavBar = () => {
                 <div>
                     <div>
                         {location.pathname === CART_ROUTER ?
-                            <Image height={sizeImg} width={sizeImg} src={cartActive} /> :
-                            <Image height={sizeImg} width={sizeImg} src={cart} />
+                            <CartActiveSvg height={sizeImg} width={sizeImg} /> :
+                            <CartSvg height={sizeImg} width={sizeImg} />
                         }
                     </div>
-                    <div className={location.pathname === CART_ROUTER ? 'my-link' : ''}>Корзина</div>
+                    <div className={location.pathname === CART_ROUTER ? 'text-main-color' : ''}>Корзина</div>
                 </div>
             </NavLink>
         </div>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Image} from "react-bootstrap";
-import arrowLeft from "../icons/png/arrow-left.png";
-import arrowRight from "../icons/png/arrow-right.png";
+
+import ArrowRight from "../icons/svgComponents/ArrowRight";
+import ArrowLeft from "../icons/svgComponents/ArrowLeft";
 
 const Counter = ({total,handlerCount}) => {
     const [count, setCount] = useState(total)
@@ -28,21 +28,13 @@ const Counter = ({total,handlerCount}) => {
 
     return (
         <div>
-            <Image
-                onClick={(e) => handlerArrowLeft(e)}
-                height={10}
-                width={10}
-                src={arrowLeft}
-                className='me-2'
-            />
+            <div onClick={(e) => handlerArrowLeft(e)} className='d-inline-block'>
+                <ArrowLeft height={15} width={15} fill="#767676" />
+            </div>
             <span className='unactive-text'>{count}</span>
-            <Image
-                onClick={ e => handlerArrowRight(e)}
-                height={10}
-                width={10}
-                src={arrowRight}
-                className='ms-2'
-            />
+            <div onClick={ e => handlerArrowRight(e)} className='d-inline-block'>
+                <ArrowRight height={15} width={15} fill="#767676" />
+            </div>
         </div>
     );
 };

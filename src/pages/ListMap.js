@@ -6,8 +6,9 @@ import Header from "../components/Header";
 
 import {MAP_ROUTER, USER_ROUTER} from "../consts";
 
-import person from "../icons/png/person.png";
-import marker from "../icons/png/marker.png";
+import Person from "../icons/svgComponents/Person";
+import Marker from "../icons/svgComponents/Marker";
+
 import EmptyListMes from "../components/EmptyListMes";
 import AddressCard from "../components/AddressCard";
 
@@ -22,10 +23,12 @@ const ListMap = () => {
             <Header className='header-bar mb-3 head-z-index-5'  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div className='d-flex align-items-center  '>
-                        <><Image height={13} width={13} src={marker} /></>
+                        <><Marker height={13} width={13} /></>
                         <div className='ms-2'>Укажите город</div>
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)} >
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
 

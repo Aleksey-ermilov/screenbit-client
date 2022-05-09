@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import {Image, Button, Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 
 import Header from "../components/Header";
 import AddressCard from "../components/AddressCard";
@@ -11,8 +11,7 @@ import ModalSuccessPay from "../components/modals/ModalSuccessPay";
 
 import {REPAIR_ROUTER, USER_ROUTER} from "../consts";
 
-import person from "../icons/png/person.png";
-
+import Person from "../icons/svgComponents/Person";
 
 const Ordering = () => {
 
@@ -36,7 +35,9 @@ const Ordering = () => {
                     <div className='  '>
                         Оформление заказа
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)}>
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
 

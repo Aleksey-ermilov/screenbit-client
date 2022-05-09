@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {useNavigate } from "react-router-dom";
-import {Image,} from "react-bootstrap";
 
 import Header from "../components/Header";
 
-import marker from '../icons/png/marker.png'
-import person from "../icons/png/person.png";
-import apple from "../icons/png/apple.png";
-import android from "../icons/png/android.png";
-import windows from "../icons/png/windows.png";
-import macos from "../icons/png/macos.png";
+import Marker from "../icons/svgComponents/Marker";
+import Person from "../icons/svgComponents/Person";
+import Apple from "../icons/svgComponents/Apple";
+import Android from "../icons/svgComponents/Android";
+import Windows from "../icons/svgComponents/Windows";
+import MacOS from "../icons/svgComponents/MacOS";
 
 import ModalRepair from "../components/modals/ModalRepair";
 import {LIST_MAP_ROUTER, USER_ROUTER} from "../consts";
@@ -18,29 +17,31 @@ const cards = [
     {
         title: 'Apple',
         subtitle: 'Заказать ремонт',
-        img: apple,
+        Img: Apple,
         onClick: () => {
             console.log('1')}
     },
     {
         title: 'Android',
         subtitle: 'Заказать ремонт',
-        img: android,
+        Img: Android,
         onClick: () => {}
     },
     {
         title: 'Windows',
         subtitle: 'Заказать ремонт',
-        img: windows,
+        Img: Windows,
         onClick: () => {}
     },
     {
         title: 'MacOS',
         subtitle: 'Заказать ремонт',
-        img: macos,
+        Img: MacOS,
         onClick: () => {}
     },
 ]
+
+const sizeImg = 60
 
 const Repair = () => {
     const [ isShow, setIsShow ] = useState(false)
@@ -52,13 +53,30 @@ const Repair = () => {
             <Header className='header-bar mb-4 '  >
                 <div className='d-flex justify-content-between font-s-16'>
                     <div onClick={() => navigate(LIST_MAP_ROUTER)} className='d-flex align-items-center  '>
-                        <><Image height={13} width={13} src={marker} /></>
+                        <><Marker height={13} width={13} /></>
                         <div className='ms-2'>Укажите город</div>
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)} >
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
             <div className='head-margin-80'>
+                {
+                    cards.map( item =>
+                        <div onClick={() => setIsShow(true)} key={item.title}>
+                            <div className='box-repair d-flex justify-content-around '>
+                                <><item.Img width={sizeImg} height={sizeImg} /></>
+                                <div className='text-main-color'>
+                                    <div className='fw-bold font-s-28'>{item.title}</div>
+                                    <div className='font-s-14'>{item.subtitle}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+            {/*<div className='head-margin-80'>
                 {
                     cards.map( item =>
                         <div onClick={() => setIsShow(true)} key={item.title}>
@@ -72,7 +90,7 @@ const Repair = () => {
                         </div>
                     )
                 }
-            </div>
+            </div>*/}
 
             <ModalRepair show={isShow} onHide={() => setIsShow(false)} />
         </div>

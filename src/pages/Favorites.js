@@ -7,10 +7,8 @@ import Header from "../components/Header";
 import Counter from "../components/Counter";
 import EmptyListMes from "../components/EmptyListMes";
 
-import person from "../icons/png/person.png";
-import phone from "../icons/png/img-phone.png";
-import imgDefaultUser from "../icons/png/img-default-user.png";
-import imgDelete from "../icons/png/delete.png"
+import Person from "../icons/svgComponents/Person";
+import DeleteSvg from "../icons/svgComponents/DeleteSvg";
 
 import {CART_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 
@@ -48,7 +46,9 @@ const Favorites = () => {
                     <div className='  '>
                         Избранное ({favorites.length})
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)}>
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
 
@@ -72,8 +72,8 @@ const Favorites = () => {
                                     <div>
                                         <div className='d-flex justify-content-between'>
                                             <Card.Text className='font-s-14 title-favorites' >{item.name}</Card.Text>
-                                            <div className='ms-2'>
-                                                <Image onClick={() => handlerDelete(item)} height={15} width={15} src={imgDelete} className='' />
+                                            <div className='ms-2' onClick={() => handlerDelete(item)}>
+                                                <DeleteSvg  height={15} width={15} />
                                             </div>
                                         </div>
                                         <Card.Text className='font-s-12 desc-favorites'>{handlerText(item.desc)}</Card.Text>
@@ -103,61 +103,3 @@ const Favorites = () => {
 };
 
 export default Favorites;
-
-const favorites = [
-    {
-        name: 'Ноутбук Асус Виво 15,6 олед м Оушоищ-44уше, черный',
-        product_id: 'prod_1',
-        price: '86900',
-        img: [phone,phone,phone,phone,imgDefaultUser],
-        count:'2',
-        desc: 'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.',
-    },
-    {
-        name: 'Ноутбук Асус Виво 15,6 олед м Оушоищ-44уше, черный',
-        product_id: 'prod_2',
-        price: '9900',
-        img: [phone,phone,phone,phone,imgDefaultUser],
-        count:1,
-        desc: 'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.',
-    },
-    {
-        name: 'Ноутбук Асус Виво 15,6 олед м Оушоищ-44уше, черный',
-        product_id: 'prod_3',
-        price: '10000',
-        img: [phone,phone,phone,phone,imgDefaultUser],
-        count:'20',
-        desc: 'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.',
-    },
-    {
-        name: 'Ноутбук Асус Виво 15,6 олед м Оушоищ-44уше, черный',
-        product_id: 'prod_4',
-        price: '9200',
-        img: [phone,phone,phone,phone,imgDefaultUser],
-        count:'5',
-        desc: 'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.',
-    },
-    {
-        name: 'Ноутбук Асус Виво 15,6 олед м Оушоищ-44уше, черный',
-        product_id: 'prod_5',
-        price: '7777',
-        img: [phone,phone,phone,phone,imgDefaultUser],
-        count:'4',
-        desc: 'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.' +
-            'Перевод достоинство, за которое все его и смотрят - его шелезо, конкурентно за эту цену практически нет.',
-    },
-]

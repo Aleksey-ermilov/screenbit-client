@@ -14,9 +14,11 @@ import ModalChangeName from "../components/modals/ModalChangeName";
 import ModalChangeImg from "../components/modals/ModalChangeImg";
 
 import imgDefaultImg from '../icons/png/img-default-user-2.png'
-import gear from "../icons/png/gear.png";
-import editImg from '../icons/png/edit-img.png'
-import arrowRight from '../icons/png/arrow-right-black.png'
+
+import Gear from "../icons/svgComponents/Gear";
+import EditSvg from "../icons/svgComponents/EditSvg";
+import DefaultUserSvg from "../icons/svgComponents/DefaultUserSvg";
+import ArrowRight from "../icons/svgComponents/ArrowRight";
 
 const User = () => {
     const [ isShowModalBirthday, setIsShowModalBirthday ] = useState(false)
@@ -37,20 +39,29 @@ const User = () => {
         <div>
             <Header className='header-bar'  >
                 <div className='d-flex justify-content-between font-s-20'>
-                    <Image onClick={() => setIsShowModalImg(true)} className='photo-user d-inline-block' src={user.img} height={60} width={60} />
+                    <div onClick={() => setIsShowModalImg(true)}>
+                        {
+                            user.img.length ?
+                                <Image src={user.img[0]} height={60} width={60} /> :
+                                <DefaultUserSvg height={60} width={60} />
+                        }
+                    </div>
+                    {/*<Image onClick={() => setIsShowModalImg(true)} className='photo-user d-inline-block' src={user.img} height={60} width={60} />*/}
                     <div className='name-user d-inline-block'>
                         {user.fullName}
-                        <span className='ms-2'>
-                            <Image onClick={() => setIsShowModalName(true)} src={editImg} height={15} width={15} />
+                        <span className='ms-2' onClick={() => setIsShowModalName(true)}>
+                            <EditSvg height={15} width={15} />
                         </span>
                     </div>
-                    <Image className='d-inline-block' onClick={() => navigate(SETTING_ROUTER)} height={15} width={15} src={gear} />
+                    <div onClick={() => navigate(SETTING_ROUTER)}>
+                        <Gear height={15} width={15} />
+                    </div>
                 </div>
             </Header>
             <div className='px-3 head-margin-120' >
                 <UserCard onClick={() => navigate(STATUSORDER_ROUTER)}>
                     <div className='me-3 font-s-20'>Узнать статус заказа</div>
-                    <Image src={arrowRight} height={10} width={10} />
+                    <ArrowRight height={15} width={15} />
                 </UserCard>
                 <UserCard onClick={() => setIsShowModalBirthday(true)}>
                     <div className='me-3 font-s-20'>Дата Рождения</div>
@@ -116,7 +127,7 @@ const user = {
     email: 'email@email.com',
     fullName: 'Иванов Вася Висарионович',
     addresses: '',
-    img: imgDefaultImg,// '56a96121-033a-41af-9f4c-2c5602fdc4e6.png'
+    img: [imgDefaultImg],// '56a96121-033a-41af-9f4c-2c5602fdc4e6.png'
     favorites: [],
     cart: [],
     history_order: [],

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Image, ListGroup, Tab} from "react-bootstrap";
+import {ListGroup, Tab} from "react-bootstrap";
 import {useNavigate } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 
 import Header from "../components/Header";
 import ListCardMessages from "../components/ListCardMessages";
 
-import person from "../icons/png/person.png";
+import Person from "../icons/svgComponents/Person";
 
 import {MESSAGE_ROUTER, USER_ROUTER} from "../consts";
 
@@ -40,7 +40,9 @@ const Messages = () => {
                     <div className='  '>
                         Сообщения
                     </div>
-                    <Image onClick={() => navigate(USER_ROUTER)} height={15} width={15} src={person} />
+                    <div onClick={() => navigate(USER_ROUTER)}>
+                        <Person height={15} width={15} />
+                    </div>
                 </div>
             </Header>
 

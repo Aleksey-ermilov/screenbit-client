@@ -2,16 +2,38 @@ import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {REGISTRATION_ROUTER, RESTORE_PASSWORD} from "../../consts";
+import {login} from "../../http/userAPI";
 
 const ModalAuth = ({show,onHide,}) => {
     const navigate = useNavigate();
 
     const [isPhone, setIsPhone] = useState(false)
 
-    const [value, setValue] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [password, setPassword] = useState('')
 
     const handlerBtn = () => {
         onHide()
+    }
+
+    const singIn = async () => {
+        const response = await login({email,phone,password})
+
+        setPassword('')
+        setEmail('')
+        setPhone('')
+    }
+
+    const changePhoneTrue = () => {
+        setIsPhone(true)
+        setEmail('')
+        setPhone('')
+    }
+    const changePhoneFalse = () => {
+        setIsPhone(false)
+        setEmail('')
+        setPhone('')
     }
 
     return (
@@ -37,12 +59,12 @@ const ModalAuth = ({show,onHide,}) => {
                     <div className='font-s-22 text-center mb-3'>Войти в Акаунт</div>
                     <div className='font-s-16 text-center mb-2'>
                         <span
-                            onClick={() => setIsPhone(true)}
+                            onClick={changePhoneTrue}
                             className={isPhone ? 'black-text' : 'unactive-text'}
                         >Номер телефона</span>
                         /
                         <span
-                            onClick={() => setIsPhone(false)}
+                            onClick={changePhoneFalse}
                             className={isPhone ? 'unactive-text' : 'black-text'}
                         >Email</span>
                     </div>
@@ -51,22 +73,23 @@ const ModalAuth = ({show,onHide,}) => {
                             isPhone ? <Form.Control
                                 placeholder={'Номер телефона'}
                                 className='my-form-control mb-2'
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
+                                value={phone}
+                                onChange={e => setPhone(e.target.value)}
                             />
                             :
                             <Form.Control
                             placeholder={'Email'}
                             className='my-form-control mb-2'
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
                         />
                             }
                         <Form.Control
                             placeholder={'Пароль'}
                             className='my-form-control mb-2'
-                            value={value}
-                            onChange={ e => setValue(e.target.value)}
+                            type='password'
+                            value={password}
+                            onChange={ e => setPassword(e.target.value)}
                         />
                     </Form>
                     <div

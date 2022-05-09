@@ -1,9 +1,10 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {Button, Card, Image} from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
 
 import {handlerText} from "../helper";
-import {PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
+import {CART_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 
 import Header from "../components/Header";
 import Counter from "../components/Counter";
@@ -11,21 +12,29 @@ import EmptyListMes from "../components/EmptyListMes";
 
 import phone from "../icons/png/img-phone.png";
 import imgDefaultUser from "../icons/png/img-default-user.png";
-import cart from '../icons/png/cartActive.png'
+
+import CartProduct from "../icons/svgComponents/CartProduct";
+import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
+
+import {addCart, setCartClickIcon} from "../store/user/actionUser";
 
 const HistoryProduct = () => {
     const navigate = useNavigate();
+
+    const {cart: carts} = useSelector( state => state.user)
+    const dispatch = useDispatch()
 
     const handlerCounter = (id,count) => {
         console.log(id,count)
     }
 
-    const handlerDelete = (id) => {
-        console.log(id)
+    const handlerAddCart = (item,count) => {
+        dispatch(setCartClickIcon(item,count))
     }
 
-    const handlerBtnBuy = (id,count) => {
-        console.log(id,count)
+    const handlerAddCartBtn = (item,count) =>{
+        dispatch(addCart(item,count))
+        navigate(CART_ROUTER)
     }
 
     const handlerProductCard = id => {
@@ -69,10 +78,16 @@ const HistoryProduct = () => {
                                 <div className='d-flex justify-content-between align-items-center'>
 
                                     <Counter total={+item.count} handlerCount={(count) => handlerCounter(item.product_id,count)} />
-                                    <div className='ms-2'>
-                                        <Image onClick={() => handlerDelete(item.product_id)} height={20} width={20} src={cart} className='' />
+                                    <div className='ms-2 d-flex align-items-center'>
+                                        <div onClick={() => handlerAddCart(item,item.count)}>
+                                            {
+                                                carts.find(i => i.product_id === item.product_id) ?
+                                                    <CartProduct height={25} width={25}/> :
+                                                    <NoCart height={25} width={25}/>
+                                            }
+                                        </div>
                                         <Button
-                                            onClick={() => handlerBtnBuy(item.product_id,item.count)}
+                                            onClick={() => handlerAddCartBtn(item,item.count)}
                                             className='my-button font-s-18 ms-3 '
                                         >В корзину</Button>
                                     </div>

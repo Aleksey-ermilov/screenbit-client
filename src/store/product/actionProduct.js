@@ -37,6 +37,15 @@ export function setSimilarProducts (category) {
     }
 }
 
+export function fetchProducts (category) {
+    return (dispatch, getState) => {
+        const { product: { products } } = getState()
+        dispatch({
+            type: SET_SIMILAR_PRODUCTS,
+            payload: products.filter( item => item.category === category)
+        })
+    }
+}
 
 
 const compareProducts = (obj,compare,products) => {
