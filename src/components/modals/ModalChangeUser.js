@@ -1,14 +1,41 @@
 import React, {useState} from 'react';
 import {Button, Modal,Form} from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
 
-const ModalChangeUser = ({show,onHide,type='text',title,value = '',setValue}) => {
+import {httpChangeBirthday, httpChangePhone,httpChangeEmail} from "../../http/userAPI";
+import {setUser} from "../../store/user/actionUser";
+
+const ModalChangeUser = ({variant,show,onHide,type='text',title,value=''}) => {
+    const {user} = useSelector( state => state.user)
+    const dispatch = useDispatch()
 
     const [text,setText] = useState(value)
 
     const handlerBtn = () => {
-        setValue(text)
-        setText('')
-        onHide()
+        if (text.trim()){
+            if (variant === 'birthday'){
+                httpChangeBirthday(text,user.user_id).then(date => {
+                    dispatch(setUser({...user,birthday:text}))
+                    onHide()
+                })
+            }
+            if (variant === 'phone'){
+                httpChangePhone(text,user.user_id).then(date => {
+                    dispatch(setUser({...user,phone:text}))
+                    onHide()
+                })
+            }
+            if (variant === 'email'){
+                httpChangeEmail(text,user.user_id).then(date => {
+                    dispatch(setUser({...user,email:text}))
+                    onHide()
+                })
+            }
+        }else {
+            //error!!!
+            console.log('change user error')
+        }
+
     }
 
     return (
@@ -35,8 +62,8 @@ const ModalChangeUser = ({show,onHide,type='text',title,value = '',setValue}) =>
                 />
                 <Button
                     className='my-button w-100 p-2 font-s-18 mb-1'
-                    onClick={() => handlerBtn()}
-                >Закрыть</Button>
+                    onClick={handlerBtn}
+                >Сохранить</Button>
             </Modal.Body>
         </Modal>
     );

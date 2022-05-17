@@ -1,16 +1,25 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {RESTORE_PASSWORD_NEW_PASSWORD} from "../../consts";
+import {useLocation, useNavigate} from "react-router-dom";
+import {RESTORE_PASSWORD_COD, RESTORE_PASSWORD_NEW_PASSWORD} from "../../consts";
 import Header from "../../components/Header";
 import {Button, Form} from "react-bootstrap";
+import {httpPasswordRecoveryCode} from "../../http/userAPI";
 
 const RestorePasswordCod = () => {
     const navigate = useNavigate();
+    const {state: {login} } = useLocation()
 
     const [value, setValue] = useState('')
 
     const handlerBtn = () => {
-        navigate(RESTORE_PASSWORD_NEW_PASSWORD)
+        if (!value.trim()){
+            //error!!!
+            console.log('field not empty')
+            return
+        }
+        httpPasswordRecoveryCode(value,login).then(date => {
+            navigate(RESTORE_PASSWORD_NEW_PASSWORD,{ state:{ login } })
+        })
     }
 
     return (

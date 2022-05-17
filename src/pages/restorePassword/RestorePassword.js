@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {RESTORE_PASSWORD_COD} from "../../consts";
 import Header from "../../components/Header";
 import {Button, Form} from "react-bootstrap";
+import {httpPasswordRecoveryLogin} from "../../http/userAPI";
 
 const RestorePassword = () => {
     const navigate = useNavigate();
@@ -10,7 +11,14 @@ const RestorePassword = () => {
     const [value, setValue] = useState('')
 
     const handlerBtn = () => {
-        navigate(RESTORE_PASSWORD_COD)
+        if (!value.trim()){
+            //error!!!
+            console.log('field not empty')
+            return
+        }
+        httpPasswordRecoveryLogin(value).then(date => {
+            navigate(RESTORE_PASSWORD_COD,{ state:{ login: value } })
+        })
     }
 
     return (
@@ -27,12 +35,13 @@ const RestorePassword = () => {
                     <div className='text-center unactive-text font-s-30 mb-3'>Вход</div>
 
                     <div className='font-s-16 text-center mb-2 unactive-text'>
-                        Введите логи
+                        Введите Email
                     </div>
                     <Form className='mb-3'>
                         <Form.Control
                             className='my-form-control mb-2 font-s-14'
                             value={value}
+                            type={'email'}
                             onChange={e => setValue(e.target.value)}
                         />
                     </Form>

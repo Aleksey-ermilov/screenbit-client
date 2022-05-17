@@ -37,7 +37,7 @@ import Ordering from "./pages/Ordering";
 import Registration from "./pages/registration/Registration";
 import RegistrationEmail from "./pages/registration/RegistrationEmail";
 import RegistrationPhone from "./pages/registration/RegistrationPhone";
-import RegistrationPhonePassword from "./pages/registration/RegistrationPhonePassword";
+import RegistrationPassword from "./pages/registration/RegistrationPassword";
 import RestorePassword from "./pages/restorePassword/RestorePassword";
 import RestorePasswordCod from "./pages/restorePassword/RestorePasswordCod";
 import RestorePasswordNewPassword from "./pages/restorePassword/RestorePasswordNewPassword";
@@ -121,7 +121,7 @@ export const publicRouter = [
     },
     {
         path: REGISTRATION_PHONE_PASSWORD_ROUTER,
-        Component: RegistrationPhonePassword
+        Component: RegistrationPassword
     },
     {
         path: RESTORE_PASSWORD,

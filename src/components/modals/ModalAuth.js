@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {REGISTRATION_ROUTER, RESTORE_PASSWORD} from "../../consts";
+import {useDispatch,useSelector} from 'react-redux'
+
+import {REGISTRATION_ROUTER, REPAIR_ROUTER, RESTORE_PASSWORD} from "../../consts";
+
 import {login} from "../../http/userAPI";
+
+import {fetchCart, fetchFavorites, setAuth, setUser} from "../../store/user/actionUser";
 
 const ModalAuth = ({show,onHide,}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const [isPhone, setIsPhone] = useState(false)
 
@@ -14,15 +20,27 @@ const ModalAuth = ({show,onHide,}) => {
     const [password, setPassword] = useState('')
 
     const handlerBtn = () => {
-        onHide()
-    }
-
-    const singIn = async () => {
-        const response = await login({email,phone,password})
+        login({email, phone, password}).then( data => {
+            dispatch(setUser(data.user))
+            dispatch(setAuth(true))
+            dispatch(fetchFavorites(data.user.favorites ? data.user.favorites : []))
+            dispatch(fetchCart(data.user.cart ? data.user.cart : []))
+        }).catch( () => {
+            navigate(REPAIR_ROUTER);
+        })
 
         setPassword('')
         setEmail('')
         setPhone('')
+        onHide()
+    }
+
+    const handlerBtnRegistration = () => {
+        navigate(REGISTRATION_ROUTER)
+        setPassword('')
+        setEmail('')
+        setPhone('')
+        onHide()
     }
 
     const changePhoneTrue = () => {
@@ -34,6 +52,11 @@ const ModalAuth = ({show,onHide,}) => {
         setIsPhone(false)
         setEmail('')
         setPhone('')
+    }
+
+    const handlerBtnPasswordRecovery = () => {
+        navigate(RESTORE_PASSWORD)
+        onHide()
     }
 
     return (
@@ -49,7 +72,7 @@ const ModalAuth = ({show,onHide,}) => {
         }} >
             <Modal
                 show={show}
-                onHide={onHide}
+                onHide={() => {onHide(); navigate(REPAIR_ROUTER); }}
                 size='sm'
                 centered
                 contentClassName='modal-repair'
@@ -93,14 +116,14 @@ const ModalAuth = ({show,onHide,}) => {
                         />
                     </Form>
                     <div
-                        onClick={() => navigate(RESTORE_PASSWORD)}
+                        onClick={handlerBtnPasswordRecovery}
                         className='font-s-16 mb-3'
                     >Восстановить доступ</div>
                     <Button
                         className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
                         onClick={handlerBtn}
                     >Войти</Button>
-                    <div onClick={() => navigate(REGISTRATION_ROUTER)} className='font-s-16 text-center mb-4'>Зарегистрироваться</div>
+                    <div onClick={handlerBtnRegistration} className='font-s-16 text-center mb-4'>Зарегистрироваться</div>
                 </Modal.Body>
             </Modal>
         </div>

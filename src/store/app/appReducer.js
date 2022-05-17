@@ -1,11 +1,12 @@
 import {
     SET_COMPLEX_REPAIR,
-    SET_SIMPLE_REPAIR
+    SET_SIMPLE_REPAIR,
+    SET_LOADING
 } from './types'
 
 const initialState = {
     complexRepair: [
-        {id: '1', name:'Ремонт дисплея', price: '1000', selected: true},
+        {id: '1', name:'Ремонт дисплея', price: '1000', selected: false},
         {id: '2', name:'Замена порта для зарядки', price: '2000', selected: false},
         {id: '3', name:'Зарядка аккумуляторной батареи', price: '3000', selected: false},
     ],
@@ -16,6 +17,7 @@ const initialState = {
         {id: '4', name:'Замена порта для зарядки', price: '400', selected: false},
         {id: '5', name:'Зарядка аккумуляторной батареи', price: '500', selected: false},
     ],
+    loading: false,
     error: null
 }
 
@@ -36,6 +38,9 @@ export const appReducer = (state = initialState, action) => {
                 }
                 return item
             })
+        }
+        case SET_LOADING: return {
+            ...state, loading: action.payload
         }
         default: return state
     }

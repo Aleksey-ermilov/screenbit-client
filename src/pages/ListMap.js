@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Image,Button} from "react-bootstrap";
+import {Button} from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
 
 import Header from "../components/Header";
 
@@ -12,12 +13,28 @@ import Marker from "../icons/svgComponents/Marker";
 import EmptyListMes from "../components/EmptyListMes";
 import AddressCard from "../components/AddressCard";
 
+import ModalAddAddress from "../components/modals/ModalAddAddress";
+import {httpDeleteAddress} from "../http/userAPI";
+import {deleteAddress} from "../store/user/actionUser";
+
 const ListMap = () => {
+    const { user_id,addresses } = useSelector(state => state.user.user)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
 
+    const [ isShowModalAddAddress, setIsShowModalAddAddress ] = useState(false)
+
     const handlerDelete = id => {
-        console.log(id)
+        httpDeleteAddress(id,user_id).then( date =>{
+            dispatch(deleteAddress(id))
+        })
     }
+    const handlerBtnAddAddress = () => {
+        setIsShowModalAddAddress(true)
+        // navigate(MAP_ROUTER)
+    }
+
     return (
         <div className='margin-bottom-address '>
             <Header className='header-bar mb-3 head-z-index-5'  >
@@ -41,66 +58,17 @@ const ListMap = () => {
                         :
                         <EmptyListMes mes={'Список пуст'} />
                 }
-                <div>
+                <div className='d-flex justify-content-center'>
                     <Button
-                        onClick={() => navigate(MAP_ROUTER)}
+                        onClick={handlerBtnAddAddress}
                         className='p-3 secondary btn-address '
                     >Добавить пункт</Button>
                 </div>
 
             </div>
-
+            <ModalAddAddress show={isShowModalAddAddress} onHide={() => setIsShowModalAddAddress(false)} />
         </div>
     );
 };
 
 export default ListMap;
-
-const addresses = [
-    {
-        id:'1',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'2',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'3',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'4',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'5',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'6',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'7',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'8',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'9',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'10',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'11',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'12',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-
-]

@@ -1,16 +1,19 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {Button, Card, Form, Modal} from "react-bootstrap";
 
-const ModalSelectAddress = ({show,onHide,}) => {
+const ModalSelectAddress = ({addresses,getAddress,show,onHide,}) => {
+
+    const [address, setAddress] = useState(addresses[0])
 
     const handlerBtn = () => {
+        getAddress(address)
         onHide()
     }
 
     return (
         <Modal
             show={show}
-            onHide={onHide}
+            onHide={handlerBtn}
             size='sm'
             centered
             contentClassName='modal-repair'
@@ -33,6 +36,8 @@ const ModalSelectAddress = ({show,onHide,}) => {
                                         type={'radio'}
                                         name={'selectedAddresses'}
                                         id={item.id}
+                                        onChange={() => setAddress(item)}
+                                        checked={item.id === address.id}
                                     />
                             </Card>
                         )
@@ -50,51 +55,3 @@ const ModalSelectAddress = ({show,onHide,}) => {
 };
 
 export default ModalSelectAddress;
-
-const addresses = [
-    {
-        id:'1',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'2',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'3',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'4',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'5',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'6',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'7',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'8',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'9',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'10',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },{
-        id:'11',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-    {
-        id:'12',
-        address: 'г.Армавир у.Красных фонарей 45, дом. 9, кв. 24'
-    },
-]

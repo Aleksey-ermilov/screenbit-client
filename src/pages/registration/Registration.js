@@ -3,17 +3,20 @@ import {Button, Form} from 'react-bootstrap'
 
 import Header from "../../components/Header";
 import {useNavigate} from "react-router-dom";
-import {REGISTRATION_EMAIL_ROUTER,REGISTRATION_PHONE_ROUTER} from "../../consts";
+import {REGISTRATION_EMAIL_ROUTER, REGISTRATION_PHONE_PASSWORD_ROUTER, REGISTRATION_PHONE_ROUTER} from "../../consts";
 
 const Registration = () => {
     const navigate = useNavigate();
 
     const [isPhone, setIsPhone] = useState(false)
 
-    const [value, setValue] = useState('')
+    const [phone, setPhone] = useState('')
+    const [email, setEmail] = useState('')
 
     const handlerBtn = () => {
-        isPhone ? navigate(REGISTRATION_PHONE_ROUTER) : navigate(REGISTRATION_EMAIL_ROUTER)
+        isPhone ? navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{phone,} })
+            :
+            navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{email,} })
     }
 
     return (
@@ -46,16 +49,16 @@ const Registration = () => {
                                     type={'tel'}
                                     placeholder={'Номер телефона'}
                                     className='my-form-control mb-2 font-s-14'
-                                    value={value}
-                                    onChange={e => setValue(e.target.value)}
+                                    value={phone}
+                                    onChange={e => setPhone(e.target.value)}
                                 />
                                 :
                                 <Form.Control
                                     type={'email'}
                                     placeholder={'Email'}
                                     className='my-form-control mb-2 font-s-14'
-                                    value={value}
-                                    onChange={e => setValue(e.target.value)}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                 />
                         }
                     </Form>

@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import {Image, Carousel, Button,ListGroup,Tab,Card} from "react-bootstrap";
 
@@ -15,40 +15,66 @@ import CartProduct from "../icons/svgComponents/CartProduct";
 import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
 
 import {CART_ROUTER, LIST_MAP_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
+
 import {setCartClickIcon, setFavorites,addCart} from "../store/user/actionUser";
-import {setSimilarProducts} from '../store/product/actionProduct'
+import {setProduct, setSimilarProducts} from '../store/product/actionProduct'
+
 import Loading from "./Loading";
+
+import {getProduct} from '../http/productApi'
+import Characteristics from "../components/Characteristics";
+import {httpAddCart, httpCartByIconCart, httpFavorites} from "../http/userAPI";
 
 const ProductCard = () => {
     const { product,similarProducts } = useSelector( state => state.product)
-    const {favorites, cart: carts} = useSelector( state => state.user)
+    const {favorites, cart: carts,user: {user_id}} = useSelector( state => state.user)
     const dispatch = useDispatch()
+    const {state: {product_id} } = useLocation()
 
     const [ isShowCharacteristics, setIsShowCharacteristics ] = useState(false)
     const [ isShowReviews, setIsShowReviews ] = useState(false)
 
+    const [loading,setLoading] = useState(true)
+
+    const [showInfo, setShowInfo] = useState('characteristics')
+
     const navigate = useNavigate();
 
     useEffect( () => { // fetch product
-        dispatch(setSimilarProducts(product.category))
-    }, [])
+        getProduct(product_id).then( data => {
+            dispatch(setProduct(data))
+            dispatch(setSimilarProducts(data.category))
+        }).finally(() => setLoading(false))
+    }, [product_id])
 
     const handlerAddFavorite = () => {
-        dispatch(setFavorites(product,1))
+        httpFavorites({...product, count: 1},user_id).then(data => {
+            dispatch(setFavorites(product,1))
+        })
     }
     const handlerAddCart = () => {
-        dispatch(setCartClickIcon(product,1))
+        httpCartByIconCart(product,1,user_id).then( data => {
+            dispatch(setCartClickIcon(product,1))
+        })
+
     }
     const handlerAddCartBtn = () =>{
-        dispatch(addCart(product,1))
-        navigate(CART_ROUTER)
+        httpAddCart(product,1,user_id).then(data=> {
+            dispatch(addCart(product,1))
+            navigate(CART_ROUTER)
+        })
     }
 
     const handlerSimilarProducts = id => {
-        navigate(`${PRODUCT_CARD_ROUTER}/${id}`)
+        navigate(`${PRODUCT_CARD_ROUTER}/${id}`,{
+            state:
+                {
+                    product_id: id,
+                }
+        })
     }
 
-    if (!Object.keys(product).length){
+    if (loading){
         return <Loading />
     }
     return (
@@ -75,7 +101,7 @@ const ProductCard = () => {
                             <Carousel.Item key={i}>
                                 <Image
                                     className="d-block m-auto"
-                                    src={img}
+                                    src={`${process.env.REACT_APP_API_URL}${img}`}
                                     height={200}
                                     alt="First slide"
                                 />
@@ -116,66 +142,37 @@ const ProductCard = () => {
                     <hr/>
                 </div>
                 <div>
-                    <Tab.Container id="list-group-tabs-example" defaultActiveKey="#characteristics">
-                        <ListGroup horizontal>
-                            <ListGroup.Item action href="#characteristics" className='z-index-0'>
-                                Характеристики
-                            </ListGroup.Item>
-                            <ListGroup.Item className='a-btn-product-card z-index-0'  onClick={() => setIsShowReviews(true)}  >
-                                Отзывы
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#accessories" className='z-index-0'>
-                                Аксессуары
-                            </ListGroup.Item>
-                        </ListGroup>
+                    <div className='d-flex justify-content-around'>
+                        <div
+                            onClick={() => setShowInfo('characteristics')}
+                            className={showInfo === 'characteristics' ? 'list-group-item active' : 'list-group-item'}
+                        >Характеристики</div>
+                        <div
+                            onClick={() => setIsShowReviews(true)}
+                            className='list-group-item a-btn-product-card z-index-0'
+                        >Отзывы</div>
+                        <div
+                            className={showInfo === 'accessories' ? 'list-group-item active' : 'list-group-item'}
+                            onClick={() => setShowInfo('accessories')}
+                        >Аксессуары</div>
+                    </div>
 
-                        <Tab.Content className='mt-3' >
-                            <Tab.Pane eventKey="#characteristics">
-                                <div >
-                                    {
-                                        product.characteristics.map( (characteristic, i) => {
-                                            if (i>1){
-                                                return <div key={i}></div>
-                                            }
-                                            const keys = Object.keys(characteristic)
-                                            return (
-                                                <div className='font-s-16 mb-3' key={keys[0]}>
-                                                    {keys[0]}
-                                                    <div className='mt-2'>{
-                                                        characteristic[keys[0]].map( char => {
-                                                            const keys = Object.keys(char)
-                                                            return (
-                                                                <div
-                                                                    className='font-s-14 d-flex justify-content-between '
-                                                                    key={keys[0]}
-                                                                >
-                                                                    <div>{keys[0]}</div>
-                                                                    <div>{char[keys[0]]}</div>
-                                                                </div>)
-                                                        })
-                                                    }</div>
-                                                </div>)
-                                        })
-                                    }
-
-
-                                </div>
-                                <Button
-                                    onClick={() => setIsShowCharacteristics(true)}
-                                    className='my-button font-s-12 btn-product-card'
-                                >Все характеристики</Button>
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="#accessories">
-                                <div>
-                                    <ul>
-                                        {product.accessories.map( (accessory,i) =>
-                                            <li key={i}>{accessory}</li>
-                                        )}
-                                    </ul>
-                                </div>
-                            </Tab.Pane>
-                        </Tab.Content>
-                    </Tab.Container>
+                    {
+                        showInfo === 'characteristics' &&
+                            <div>
+                                <Characteristics characteristics={characteristics}/>
+                            </div>
+                    }
+                    {
+                        showInfo === 'accessories' &&
+                        <div>
+                            <ul>
+                                {product.accessories.map( (accessory,i) =>
+                                    <li key={i}>{accessory}</li>
+                                )}
+                            </ul>
+                        </div>
+                    }
                     <hr />
 
                     <h3 className='font-s-20 fw-normal mt-3'>Похожие товары</h3>
@@ -191,7 +188,10 @@ const ProductCard = () => {
                                 >
                                     <Card.Body>
                                         <div >
-                                            <Card.Img src={item.img[0]} className='product-card-img mb-2 mx-auto d-block' />
+                                            <Card.Img
+                                                src={`${process.env.REACT_APP_API_URL}${item.img[0]}`}
+                                                className='product-card-img mb-2 mx-auto d-block'
+                                            />
                                             <div className='text-wrap'>{item.name}</div>
                                         </div>
                                     </Card.Body>
@@ -213,3 +213,5 @@ const ProductCard = () => {
 };
 
 export default ProductCard;
+
+const characteristics = [["Внешний вид",[["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],["Внешний вид", [["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],]

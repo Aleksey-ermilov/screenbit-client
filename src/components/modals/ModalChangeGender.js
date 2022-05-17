@@ -1,13 +1,22 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
 
-const ModalChangeGender = ({show,onHide,value = '',setValue}) => {
+import {httpChangeGender} from "../../http/userAPI";
+import {setUser} from "../../store/user/actionUser";
 
-    const [text,setText] = useState(value)
+const ModalChangeGender = ({show,onHide,value = ''}) => {
+    const {user} = useSelector( state => state.user)
+    const dispatch = useDispatch()
+
+    const [text,setText] = useState(user.gender)
 
     const handlerBtn = () => {
+        httpChangeGender(text,user.user_id).then(date => {
+            dispatch(setUser({...user,gender:text}))
+            onHide()
+        })
 
-        onHide()
     }
 
     return (
@@ -33,30 +42,23 @@ const ModalChangeGender = ({show,onHide,value = '',setValue}) => {
                         label={'Мужской'}
                         name={'gender'}
                         className=' mb-2'
-                        // value={text}
-                        onChange={ e => {
-                            setText(e.target.value)
-                            console.log('Мужской',e.target.value)
-                        }}
+                        checked={text === 'Мужской'}
+                        onChange={ e => setText('Мужской')}
                     />
                     <Form.Check
-                        // checked
                         id={'2'}
                         type={'radio'}
                         label={'Женский'}
                         name={'gender'}
                         className=' mb-2'
-                        value={'on'}
-                        onChange={ e => {
-                            setText(e.target.value)
-                            console.log('Женский',e.target.value)
-                        }}
+                        checked={text === 'Женский'}
+                        onChange={ e => setText('Женский')}
                     />
                 </Form>
                 <Button
                     className='my-button w-100 p-2 font-s-18 mb-1'
                     onClick={() => handlerBtn()}
-                >Закрыть</Button>
+                >Сохранить</Button>
             </Modal.Body>
         </Modal>
     );

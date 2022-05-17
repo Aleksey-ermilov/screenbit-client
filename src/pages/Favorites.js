@@ -15,20 +15,25 @@ import {CART_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 import {setFavorites,setCountFavorite,addCart} from '../store/user/actionUser'
 
 import {handlerText} from '../helper'
+import {httpFavorites, httpFavoritesCount} from "../http/userAPI";
 
 const Favorites = () => {
     const navigate = useNavigate();
 
-    const {favorites} = useSelector( state => state.user)
+    const {favorites,user:{user_id}} = useSelector( state => state.user)
     const dispatch = useDispatch()
 
 
     const handlerCounter = (product_id,count) => {
-        dispatch(setCountFavorite(product_id,count))
+        httpFavoritesCount(product_id,count,user_id).then(data => {
+            dispatch(setCountFavorite(product_id,count))
+        })
     }
 
     const handlerDelete = (item) => {
-        dispatch(setFavorites(item,1))
+        httpFavorites({...item, count: 1},user_id).then(data => {
+            dispatch(setFavorites(item,1))
+        })
     }
 
     const handlerBtnBuy = (item,count) => {
@@ -66,11 +71,11 @@ const Favorites = () => {
                                            onClick={()=> handlerProductCard(item.product_id)}
                                            height={100}
                                            style={{width: '100px'}}
-                                           src={item.img[0]}
+                                           src={`${process.env.REACT_APP_API_URL}${item.img[0]}`}
                                            className='img-favorites'
                                     />
-                                    <div>
-                                        <div className='d-flex justify-content-between'>
+                                    <div className='w-100 px-2'>
+                                        <div className='d-flex justify-content-between '>
                                             <Card.Text className='font-s-14 title-favorites' >{item.name}</Card.Text>
                                             <div className='ms-2' onClick={() => handlerDelete(item)}>
                                                 <DeleteSvg  height={15} width={15} />
@@ -79,10 +84,10 @@ const Favorites = () => {
                                         <Card.Text className='font-s-12 desc-favorites'>{handlerText(item.desc)}</Card.Text>
                                     </div>
                                 </div>
-                                <div className='d-flex justify-content-end mb-3'>
+                                <div className='d-flex justify-content-end mb-3 px-2'>
                                     <Card.Text>{item.price}р</Card.Text>
                                 </div>
-                                <div className='d-flex justify-content-between'>
+                                <div className='d-flex justify-content-between '>
 
                                     <Counter total={+item.count} handlerCount={(count) => handlerCounter(item.product_id,count)} />
                                     <Button

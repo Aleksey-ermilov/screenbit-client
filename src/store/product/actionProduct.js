@@ -2,7 +2,9 @@ import {
     SELECTED_CATEGORIES,
     SET_PRODUCTS,
     SET_SORT,
-    SEARCH_PRODUCTS, SET_PRODUCT, SET_SIMILAR_PRODUCTS
+    SEARCH_PRODUCTS,
+    SET_PRODUCT,
+    SET_SIMILAR_PRODUCTS,
 }
     from './types'
 
@@ -46,6 +48,7 @@ export function fetchProducts (category) {
         })
     }
 }
+
 
 
 const compareProducts = (obj,compare,products) => {

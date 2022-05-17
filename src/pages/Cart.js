@@ -15,11 +15,12 @@ import Person from "../icons/svgComponents/Person";
 import DeleteSvg from "../icons/svgComponents/DeleteSvg";
 
 import { addCart,deleteCart } from '../store/user/actionUser'
+import {httpDeleteCart} from "../http/userAPI";
 
 const Cart = () => {
     const navigate = useNavigate();
 
-    const {cart} = useSelector( state => state.user)
+    const {cart,user:{user_id}} = useSelector( state => state.user)
     const dispatch = useDispatch()
 
     const handlerCounter = (item,count) => {
@@ -28,7 +29,9 @@ const Cart = () => {
     }
 
     const handlerDelete = (product_id) => {
-        dispatch(deleteCart(product_id))
+        httpDeleteCart(product_id,user_id).then(data=>{
+            dispatch(deleteCart(product_id))
+        })
     }
 
     const handlerBtnOrder = () => {
@@ -72,15 +75,15 @@ const Cart = () => {
                                     key={item.product_id}
                                 >
                                     <Card.Body>
-                                        <div className='d-flex '>
+                                        <div className='d-flex mb-3'>
                                             <Image
                                                 onClick={() => handlerProductCard(item.product_id)}
                                                 height={100}
                                                 style={{width: '100px'}}
-                                                src={item.img[0]}
+                                                src={`${process.env.REACT_APP_API_URL}${item.img[0]}`}
                                                 className='img-favorites'
                                             />
-                                            <div className='mb-4'>
+                                            <div className='mb-4 w-100 px-2'>
                                                 <div className='d-flex justify-content-between'>
                                                     <Card.Text className='font-s-14 title-favorites'>{item.name}</Card.Text>
                                                     <div className='ms-2' onClick={() => handlerDelete(item.product_id)}>
@@ -92,7 +95,7 @@ const Cart = () => {
                                             </div>
                                         </div>
 
-                                        <div className='d-flex justify-content-between '>
+                                        <div className='d-flex justify-content-between px-2'>
 
                                             <Counter total={+item.count}
                                                      handlerCount={(count) => handlerCounter(item, count)}/>

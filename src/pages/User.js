@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Image} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 import {SETTING_ROUTER, STATUSORDER_ROUTER} from "../consts";
 
@@ -13,14 +14,16 @@ import ModalChangeGender from "../components/modals/ModalChangeGender";
 import ModalChangeName from "../components/modals/ModalChangeName";
 import ModalChangeImg from "../components/modals/ModalChangeImg";
 
-import imgDefaultImg from '../icons/png/img-default-user-2.png'
-
 import Gear from "../icons/svgComponents/Gear";
 import EditSvg from "../icons/svgComponents/EditSvg";
 import DefaultUserSvg from "../icons/svgComponents/DefaultUserSvg";
 import ArrowRight from "../icons/svgComponents/ArrowRight";
 
+import {handlerRoundText} from "../helper";
+
 const User = () => {
+    const {user} = useSelector( state => state.user)
+
     const [ isShowModalBirthday, setIsShowModalBirthday ] = useState(false)
     const [ isShowModalPhone, setIsShowModalPhone ] = useState(false)
     const [ isShowModalEmail, setIsShowModalEmail ] = useState(false)
@@ -29,9 +32,9 @@ const User = () => {
     const [ isShowModalName, setIsShowModalName ] = useState(false)
     const [ isShowModalImg, setIsShowModalImg ] = useState(false)
 
-    const [birthday,setBirthday] = useState(user.birthday)
     const [phone,setPhone] = useState(user.phone)
     const [email,setEmail] = useState(user.email)
+    const [img,setImg] = useState(user.img[0])
 
     const navigate = useNavigate();
 
@@ -41,14 +44,13 @@ const User = () => {
                 <div className='d-flex justify-content-between font-s-20'>
                     <div onClick={() => setIsShowModalImg(true)}>
                         {
-                            user.img.length ?
-                                <Image src={user.img[0]} height={60} width={60} /> :
+                            user.img?.length ?
+                                <Image src={`${process.env.REACT_APP_API_URL}${img}`} height={60} width={60} /> :
                                 <DefaultUserSvg height={60} width={60} />
                         }
                     </div>
-                    {/*<Image onClick={() => setIsShowModalImg(true)} className='photo-user d-inline-block' src={user.img} height={60} width={60} />*/}
                     <div className='name-user d-inline-block'>
-                        {user.fullName}
+                        {handlerRoundText(`${user.lastname ? user.lastname : '' + ' '} ${user.name} ${user.patronymic ? user.patronymic : '' + ' '}`,30)}
                         <span className='ms-2' onClick={() => setIsShowModalName(true)}>
                             <EditSvg height={15} width={15} />
                         </span>
@@ -92,7 +94,7 @@ const User = () => {
                     >{user.phone ? 'Изменить' : 'Не указано'}</div>
                 </UserCard>
                 <UserCard onClick={() => setIsShowModalEmail(true)}>
-                    <div className='me-3 font-s-20'>{user.email ? user.email : 'Email'}</div>
+                    <div className='me-3 font-s-20'>{user.email ? handlerRoundText(user.email,18) : 'Email'}</div>
                     <div
                         className='card-info-user unactive-text font-s-14'
                     >{user.email ? 'Изменить' : 'Не указано'}</div>
@@ -102,34 +104,15 @@ const User = () => {
                 </UserCard>
 
             </div>
-            <ModalChangeUser type={'date'} setValue={setBirthday} title={'Дата Рождения'} show={isShowModalBirthday} onHide={() => setIsShowModalBirthday(false)} />
-            <ModalChangeUser type={'tel'} setValue={setPhone} title={'Ввести номер'} show={isShowModalPhone} onHide={() => setIsShowModalPhone(false)} />
-            <ModalChangeUser type={'email'} setValue={setEmail} title={'Ввести E-mail'} show={isShowModalEmail} onHide={() => setIsShowModalEmail(false)} />
+            <ModalChangeUser variant={'birthday'} value={user.birthday} type={'date'} title={'Дата Рождения'} show={isShowModalBirthday} onHide={() => setIsShowModalBirthday(false)} />
+            <ModalChangeUser variant={'phone'} value={user.phone} type={'tel'} setValue={setPhone} title={'Ввести номер'} show={isShowModalPhone} onHide={() => setIsShowModalPhone(false)} />
+            <ModalChangeUser variant={'email'} value={user.email} type={'email'} setValue={setEmail} title={'Ввести E-mail'} show={isShowModalEmail} onHide={() => setIsShowModalEmail(false)} />
             <ModalChangePassword show={isShowModalPassword} onHide={() => setIsShowModalPassword(false)} />
             <ModalChangeGender show={isShowModalGender} onHide={() => setIsShowModalGender(false)} />
             <ModalChangeName show={isShowModalName} onHide={() => setIsShowModalName(false)} />
-            <ModalChangeImg show={isShowModalImg} onHide={() => setIsShowModalImg(false)} />
+            <ModalChangeImg getImg={(item) => setImg(item)} show={isShowModalImg} onHide={() => setIsShowModalImg(false)} />
         </div>
     );
 };
 
 export default User;
-
-const user = {
-    id: '2',
-    name: 'Вася',
-    lastname: 'Иванов',
-    patronymic: 'Висарионович',
-    gender: 'Мужской',
-    birthday: '15.02.1998',
-    user_id: 'auth_2',
-    phone: '8 800 800 88 88',
-    email: 'email@email.com',
-    fullName: 'Иванов Вася Висарионович',
-    addresses: '',
-    img: [imgDefaultImg],// '56a96121-033a-41af-9f4c-2c5602fdc4e6.png'
-    favorites: [],
-    cart: [],
-    history_order: [],
-    order_status: []
-}

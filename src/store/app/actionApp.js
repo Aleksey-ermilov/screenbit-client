@@ -1,5 +1,5 @@
 import {
-    SET_COMPLEX_REPAIR,
+    SET_COMPLEX_REPAIR, SET_LOADING,
     SET_SIMPLE_REPAIR
 } from './types'
 
@@ -8,6 +8,9 @@ export function setComplexRepair (id) {
 }
 export function setSimpleRepair (id) {
     return {type: SET_SIMPLE_REPAIR, payload: id}
+}
+export function setLoading (loading) {
+    return {type: SET_LOADING, payload: loading}
 }
 /*
 export function updateUser (user) {

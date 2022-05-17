@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Modal} from "react-bootstrap";
+import Characteristics from "../Characteristics";
 
 const ModalCharacteristics = ({show,onHide,characteristics}) => {
 
@@ -23,35 +24,9 @@ const ModalCharacteristics = ({show,onHide,characteristics}) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
                 <div >
-                    {
-                        characteristics.map( (characteristic, i) => {
-
-                            const keys = Object.keys(characteristic)
-                            return (
-                                <div className='font-s-16 mb-3' key={keys[0]}>
-                                    {keys[0]}
-                                    <div className='mt-2'>{
-                                        characteristic[keys[0]].map( char => {
-                                            const keys = Object.keys(char)
-                                            return (
-                                                <div
-                                                    className='font-s-14 d-flex justify-content-between '
-                                                    key={keys[0]}
-                                                >
-                                                    <div>{keys[0]}</div>
-                                                    <div>{char[keys[0]]}</div>
-                                                </div>)
-                                        })
-                                    }</div>
-                                </div>)
-                        })
-                    }
-
-
+                    <Characteristics characteristics={characteristics}/>
                 </div>
-
                 <Button
                     className='my-button w-100 p-2 font-s-18 mb-1'
                     onClick={() => handlerBtn()}

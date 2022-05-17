@@ -1,10 +1,11 @@
-import React, {useState,useRef} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 import {useNavigate } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import {Form,Dropdown,Card} from "react-bootstrap";
 
 import Header from "../components/Header";
 import Loading from "./Loading";
+import EmptyListMes from "../components/EmptyListMes";
 
 import Person from "../icons/svgComponents/Person";
 import {FavoritesActiveSvg as Favorites} from "../icons/svgComponents/FavoritesActiveSvg";
@@ -14,36 +15,53 @@ import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
 
 import {PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 
-import {selectedCategories,setSort,searchProducts,setProduct} from '../store/product/actionProduct'
-import {setCartClickIcon,setFavorites} from '../store/user/actionUser'
-import EmptyListMes from "../components/EmptyListMes";
+import {selectedCategories, setSort, searchProducts, setProducts} from '../store/product/actionProduct'
+import {setCartClickIcon, setFavorites} from '../store/user/actionUser'
+
+import {getProducts} from "../http/productApi";
+import {httpCartByIconCart, httpFavorites} from "../http/userAPI";
 
 const Products = () => {
     const {
         products,sortNewer,sortPrice,
         categories, sort,search
     } = useSelector( state => state.product)
-    const {favorites, cart: carts} = useSelector( state => state.user)
+    const {favorites, cart: carts,user: {user_id}} = useSelector( state => state.user)
     const dispatch = useDispatch()
 
     const navigate = useNavigate();
 
+    const [loading,setLoading] = useState(true)
     const [value,setValue] = useState(search)
     let timer = useRef(null)
 
-    const productsFilterByCategories = products.filter( i => categories.some( c => c.checked && (c.name === i.category)) )
+    useEffect( () => {
+        getProducts().then( data => {
+            dispatch(setProducts(data.rows))
+        }).finally(() => setLoading(false))
+    },[])
 
+    const productsFilterByCategories = products.filter( i => categories.some( c => c.checked && (c.name === i.category)) )
     const handlerProductCard = item => {
-        dispatch(setProduct(item))
-        navigate(`${PRODUCT_CARD_ROUTER}/${item.id}`)
+        navigate(`${PRODUCT_CARD_ROUTER}/${item.product_id}`,{
+            state:
+                {
+                    product_id: item.product_id,
+                }
+        })
     }
     const handlerAddFavorite = (e,item) => {
         e.stopPropagation()
-        dispatch(setFavorites(item,1))
+        httpFavorites({...item, count: 1},user_id).then(data => {
+            dispatch(setFavorites(item,1))
+        })
+
     }
     const handlerAddCart = (e,item) => {
         e.stopPropagation()
-        dispatch(setCartClickIcon(item,1))
+        httpCartByIconCart(item,1,user_id).then( data => {
+            dispatch(setCartClickIcon(item,1))
+        })
     }
     const handlerSearchForm = e => {
         if(timer.current !== null){
@@ -62,7 +80,7 @@ const Products = () => {
         return arr.filter( item => item.name.includes(search))
     }
 
-    if (!products.length){
+    if (loading){
         return <Loading />
     }
     return (
@@ -151,9 +169,9 @@ const Products = () => {
                             className='product-card font-s-14 mb-2'
                             key={item.product_id}
                         >
-                            <Card.Body className='d-flex p-2' >
+                            <Card.Body className='d-flex p-2 justify-content-between'  >
                                 <div >
-                                    <Card.Img src={item.img[0]} className='product-card-img mb-2' />
+                                    <Card.Img src={`${process.env.REACT_APP_API_URL}${item.img[0]}`} className='product-card-img mb-2' />
                                     <div>{item.name}</div>
                                 </div>
                                 <div className='product-card-icon'>

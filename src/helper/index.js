@@ -6,3 +6,12 @@ export const handlerText = text => {
     }
     return text
 }
+
+export const handlerRoundText = (text,round = 15) => {
+    if(text.length > round){
+        let t = text.split('',round)
+        t = t.join('') + '...'
+        return t
+    }
+    return text
+}

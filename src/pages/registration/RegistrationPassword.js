@@ -1,18 +1,33 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Button, Form} from "react-bootstrap";
+import {useDispatch,useSelector} from "react-redux";
 
 import {REPAIR_ROUTER} from "../../consts";
 
 import Header from "../../components/Header";
+import {registrationAuth} from "../../http/userAPI";
+import {setLoading} from "../../store/app/actionApp";
+import {setAuth, setUser} from "../../store/user/actionUser";
 
-const RegistrationPhonePassword = () => {
+const RegistrationPassword = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
-    const [value, setValue] = useState('')
+    const {user_id} = useSelector( state => state.user.user)
+
+    const {state: {email,phone} } = useLocation()
+
+    const [password, setPassword] = useState('')
 
     const handlerBtn = () => {
-        navigate(REPAIR_ROUTER)
+
+        registrationAuth({phone,email,password,user_id}).then(data =>{
+            dispatch(setLoading(true))
+            dispatch(setUser(data.user))
+            dispatch(setAuth(true))
+            navigate(REPAIR_ROUTER)
+        }).finally(() => dispatch(setLoading(true)))
     }
 
     return (
@@ -33,10 +48,10 @@ const RegistrationPhonePassword = () => {
                     </div>
                     <Form className='mb-3'>
                         <Form.Control
-                            type={'number'}
+                            type={'password'}
                             className='my-form-control mb-2 font-s-14'
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
                         />
                     </Form>
                     <Button
@@ -51,4 +66,4 @@ const RegistrationPhonePassword = () => {
     );
 };
 
-export default RegistrationPhonePassword;
+export default RegistrationPassword;

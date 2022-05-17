@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate } from "react-router-dom";
+import {Button} from "react-bootstrap";
 
 import Header from "../components/Header";
 
@@ -45,8 +46,33 @@ const sizeImg = 60
 
 const Repair = () => {
     const [ isShow, setIsShow ] = useState(false)
+    const [ os, setOs ] = useState('')
+    const [promptInstall, setPromptInstall] = useState(null);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const handler = e => {
+            e.preventDefault();
+            setPromptInstall(e);
+        };
+        window.addEventListener("beforeinstallprompt", handler);
+        return () => window.removeEventListener("transitionend", handler);
+    }, [])
+
+    const onClick = e => {
+        e.preventDefault();
+        if (promptInstall) {
+            promptInstall.prompt();
+        }else{
+            return;
+        };
+    };
+
+    const handlerOrderRepair = title => {
+        setOs(title)
+        setIsShow(true)
+    }
 
     return (
         <div className='margin-bottom-footer'>
@@ -56,15 +82,20 @@ const Repair = () => {
                         <><Marker height={13} width={13} /></>
                         <div className='ms-2'>Укажите город</div>
                     </div>
-                    <div onClick={() => navigate(USER_ROUTER)} >
-                        <Person height={15} width={15} />
+                    <div className='d-flex align-items-center'>
+
+                        <Button className='me-3 my-button' onClick={(e) => onClick(e)}>Скачать</Button>
+
+                        <div onClick={() => navigate(USER_ROUTER)} >
+                            <Person height={15} width={15} />
+                        </div>
                     </div>
                 </div>
             </Header>
             <div className='head-margin-80'>
                 {
                     cards.map( item =>
-                        <div onClick={() => setIsShow(true)} key={item.title}>
+                        <div onClick={() => handlerOrderRepair(item.title)} key={item.title}>
                             <div className='box-repair d-flex justify-content-around '>
                                 <><item.Img width={sizeImg} height={sizeImg} /></>
                                 <div className='text-main-color'>
@@ -76,23 +107,9 @@ const Repair = () => {
                     )
                 }
             </div>
-            {/*<div className='head-margin-80'>
-                {
-                    cards.map( item =>
-                        <div onClick={() => setIsShow(true)} key={item.title}>
-                            <div className='box-repair d-flex justify-content-around '>
-                                <><Image height={60} width={60} src={item.img} /></>
-                                <div className='text-main-color'>
-                                    <div className='fw-bold font-s-28'>{item.title}</div>
-                                    <div className='font-s-14'>{item.subtitle}</div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-            </div>*/}
 
-            <ModalRepair show={isShow} onHide={() => setIsShow(false)} />
+
+            <ModalRepair os={os} show={isShow} onHide={() => setIsShow(false)}  />
         </div>
     );
 };

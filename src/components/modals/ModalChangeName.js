@@ -1,12 +1,30 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
+import {useDispatch,useSelector} from "react-redux";
+import {httpChangeName} from "../../http/userAPI";
+import {setUser} from "../../store/user/actionUser";
 
 const ModalChangeName = ({show,onHide,}) => {
-    const [value,setValue] = useState('')
+
+    const {user} = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    const [name,setName] = useState('')
+    const [lastname,setLastname] = useState('')
+    const [patronymic,setPatronymic] = useState('')
+
 
     const handlerBtn = () => {
+        if (name.trim()){
+            httpChangeName(name.trim(),lastname.trim(),patronymic.trim(),user.user_id).then(date => {
+                dispatch(setUser({...user,name,lastname,patronymic}))
+                onHide()
+            })
+        }else {
+            //error!!!
+            console.log('field name not empty')
+        }
 
-        onHide()
     }
 
     return (
@@ -30,8 +48,8 @@ const ModalChangeName = ({show,onHide,}) => {
                     <Form.Control
                         placeholder={'Имя'}
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={name}
+                        onChange={ e => setName(e.target.value)}
                     />
                 </Form.Group>
                 <Form.Group controlId="formLastname" className='mb-3'>
@@ -39,8 +57,8 @@ const ModalChangeName = ({show,onHide,}) => {
                     <Form.Control
                         placeholder={'Фамилия'}
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={lastname}
+                        onChange={ e => setLastname(e.target.value)}
                     />
                 </Form.Group>
                 <Form.Group controlId="formPatronymic" className='mb-5'>
@@ -48,14 +66,14 @@ const ModalChangeName = ({show,onHide,}) => {
                     <Form.Control
                         placeholder={'Отчество'}
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={patronymic}
+                        onChange={ e => setPatronymic(e.target.value)}
                     />
                 </Form.Group>
                 <Button
                     className='my-button w-100 p-2 font-s-18 mb-1'
-                    onClick={() => handlerBtn()}
-                >Закрыть</Button>
+                    onClick={handlerBtn}
+                >Сохранить</Button>
             </Modal.Body>
         </Modal>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, ListGroup, Tab, Card, Col,Row,Container} from "react-bootstrap";
+import {useSelector} from "react-redux";
 
 import Header from "../components/Header";
 import EmptyListMes from "../components/EmptyListMes";
@@ -7,6 +8,7 @@ import EmptyListMes from "../components/EmptyListMes";
 import phone from '../icons/png/img-phone.png'
 
 const StatusOrder = () => {
+    const {order_status,repair_status} = useSelector( state => state.user.user)
     const option = { year: 'numeric', month: 'numeric', day: 'numeric' }
     return (
         <div className='margin-bottom-footer '>
@@ -35,9 +37,9 @@ const StatusOrder = () => {
                         <Tab.Content className='mt-3' >
                             <Tab.Pane eventKey="#repair">
                                 {
-                                    statusRepair.length ?
-                                        statusRepair.map( item =>
-                                            <Card key={item.id} className='mb-3 py-2 shadow-mine secondary'>
+                                    repair_status.length ?
+                                        repair_status.map( item =>
+                                            <Card key={item.repair_id} className='mb-3 py-2 shadow-mine secondary'>
                                                 <Container>
                                                     <div className='font-s-16 mb-2'>Ремонт №{item.repair_id}</div>
                                                     <div className='font-s-12'>
@@ -46,12 +48,12 @@ const StatusOrder = () => {
                                                             <Col xs={6}>Статус - {item.status}</Col>
                                                         </Row>
                                                         <Row className='d-flex justify-content-between'>
-                                                            <Col xs={6}>Причина поломки: {item.breakage}</Col>
-                                                            <Col xs={6}>Ожидаемая дата починки - {new Date(item.date_repair).toLocaleDateString('ru-RU',option)}</Col>
+                                                            <Col xs={6}>Причина поломки: {item.breakage ? item.breakage : 'Выясняются'}</Col>
+                                                            <Col xs={6}>Ожидаемая дата починки - {item.date_repair ? new Date(item.date_repair).toLocaleDateString('ru-RU',option) : 'Пока неизвестно'}</Col>
                                                         </Row>
                                                         <Row className='d-flex justify-content-between'>
-                                                            <Col xs={6}>Ремонт: {item.repair}</Col>
-                                                            <Col xs={6}>Дата доставки - {new Date(item.date_delivery).toLocaleDateString('ru-RU',option)}</Col>
+                                                            <Col xs={6}>Ремонт: {item.repair ? item.repair : 'Пока неизвестно'}</Col>
+                                                            <Col xs={6}>Дата доставки - {item.date_delivery ? new Date(item.date_delivery).toLocaleDateString('ru-RU',option) : 'Пока неизвестно'}</Col>
                                                         </Row>
                                                     </div>
                                                 </Container>
@@ -64,21 +66,28 @@ const StatusOrder = () => {
                             <Tab.Pane eventKey="#orders">
                                 <div>
                                     {
-                                        statusOrder.length ?
-                                            statusOrder.map( item =>
-                                                <Card key={item.id} className='mb-3 p-2 shadow-mine secondary'>
+                                        order_status.length ?
+                                            order_status.map( (item,i) =>
+                                                <Card key={i} className='mb-3 p-2 shadow-mine secondary'>
                                                     <div className='d-flex justify-content-between mb-2'>
-                                                        <Image src={item.img} width={120} height={120} />
+                                                        <Image src={`${process.env.REACT_APP_API_URL}${item.img[0]}`} width={120} height={120} />
                                                         <div >
                                                             <div className='font-s-14 mb-3'>{item.name}</div>
-                                                            <div className='font-s-12'>{item.decs}</div>
+                                                            <div className='font-s-12'>{item.desc}</div>
                                                         </div>
                                                     </div>
                                                     <div className='d-flex justify-content-between'>
-                                                        <div className='font-s-14'>
-                                                            <div>Дата доставки</div>
-                                                            <div>{new Date(item.date).toLocaleDateString('ru-RU',option)}</div>
-                                                        </div>
+                                                        {
+                                                            item.delivery_date ?
+                                                                <div className='font-s-14'>
+                                                                    <div>Дата доставки</div>
+                                                                    <div>{new Date(item.delivery_date).toLocaleDateString('ru-RU',option)}</div>
+                                                                </div>
+                                                                :
+                                                                <div className='font-s-14'>
+                                                                    <div>{item.status}</div>
+                                                                </div>
+                                                        }
                                                         <div className='font-s-16'>{item.price} Р</div>
                                                     </div>
                                                 </Card>

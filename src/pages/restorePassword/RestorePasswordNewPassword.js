@@ -1,16 +1,31 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {REPAIR_ROUTER} from "../../consts";
 import Header from "../../components/Header";
 import {Button, Form} from "react-bootstrap";
+import {httpPasswordRecoveryPassword} from "../../http/userAPI";
 
 const RestorePasswordNewPassword = () => {
     const navigate = useNavigate();
+    const {state: {login} } = useLocation()
 
-    const [value, setValue] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     const handlerBtn = () => {
-        navigate(REPAIR_ROUTER)
+        if (!(newPassword.trim() && confirmPassword.trim())){
+            //error!!
+            console.log('fields not empty')
+            return
+        }
+        if(newPassword !== confirmPassword){
+            //error
+            console.log('password not equal')
+            return
+        }
+        httpPasswordRecoveryPassword(newPassword,login).then(date=>{
+            navigate(REPAIR_ROUTER)
+        })
     }
 
     return (
@@ -34,16 +49,16 @@ const RestorePasswordNewPassword = () => {
                             <Form.Label className='font-s-16 unactive-text' >Новый пароль</Form.Label>
                             <Form.Control
                                 className='my-form-control'
-                                value={value}
-                                onChange={ e => setValue(e.target.value)}
+                                value={newPassword}
+                                onChange={ e => setNewPassword(e.target.value)}
                             />
                         </Form.Group>
                         <Form.Group controlId="formConfirmPassword" className='mb-5'>
                             <Form.Label className='font-s-16 unactive-text' >Подтвердите пароль</Form.Label>
                             <Form.Control
                                 className='my-form-control'
-                                value={value}
-                                onChange={ e => setValue(e.target.value)}
+                                value={confirmPassword}
+                                onChange={ e => setConfirmPassword(e.target.value)}
                             />
                         </Form.Group>
                     </Form>

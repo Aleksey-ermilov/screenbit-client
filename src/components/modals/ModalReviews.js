@@ -25,7 +25,7 @@ const ModalReviews = ({show,onHide,reviews}) => {
 
                         return <div key={review.user.user_id}>
                             <div className='d-flex align-items-center mb-2 '>
-                                <Image height={40} width={40} src={review.user.img} />
+                                <Image height={40} width={40} src={`${process.env.REACT_APP_API_URL}${review.user.img}`} />
                                 <div className='ms-2 font-s-14'>{review.user.fullName}</div>
                             </div>
                             <p className='font-s-12 p-review-product-card'>{review.message}</p>

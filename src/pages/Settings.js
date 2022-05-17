@@ -1,13 +1,34 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import {Button,Form} from "react-bootstrap";
+import {Button} from "react-bootstrap";
+import {useDispatch} from "react-redux";
 
 import Header from "../components/Header";
 
 import {HISTORY_PRODUCT_ROUTER, REPAIR_ROUTER} from "../consts";
 
+import {fetchCart, fetchFavorites, setAuth, setUser} from "../store/user/actionUser";
+import {setLoading} from "../store/app/actionApp";
+import {registrationUser} from "../http/userAPI";
+
 const Settings = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const handlerBtnExit = () => {
+        navigate(REPAIR_ROUTER)
+        dispatch(setAuth(false))
+        dispatch(setUser(null))
+        dispatch(fetchFavorites([]))
+        dispatch(fetchCart([]))
+        localStorage.setItem('token',null)
+        localStorage.setItem('user',null)
+        dispatch(setLoading(true))
+        registrationUser().then( data => {
+            dispatch(setUser(data.user))
+        }).finally(() => dispatch(setLoading(false)))
+    }
+
     return (
         <div className='margin-bottom-address'>
             <Header className='header-bar mb-4  '  >
@@ -38,7 +59,7 @@ const Settings = () => {
 
                 <div>
                     <Button
-                        onClick={() => navigate(REPAIR_ROUTER)}
+                        onClick={handlerBtnExit}
                         className='p-2 secondary  btn-exit font-s-22'
                     >Выйти</Button>
                 </div>

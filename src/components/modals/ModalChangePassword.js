@@ -1,13 +1,33 @@
 import React, {useState} from 'react';
 import {Button, Modal,Form} from "react-bootstrap";
+import {useSelector} from "react-redux";
+
+import {httpChangePassword} from "../../http/userAPI";
 
 const ModalChangePassword = ({show,onHide,}) => {
+    const {user_id} = useSelector( state => state.user.user)
 
-    const [value,setValue] = useState('')
+    const [oldPassword,setOldPassword] = useState('')
+    const [newPassword,setNewPassword] = useState('')
+    const [confirmPassword,setConfirmPassword] = useState('')
 
     const handlerBtn = () => {
-
-        onHide()
+        if (!(oldPassword.trim() && newPassword.trim() && confirmPassword.trim())){
+            //error!!
+            console.log('fields not empty')
+            return
+        }
+        if(newPassword !== confirmPassword){
+            //error
+            console.log('password not equal')
+            return
+        }
+        httpChangePassword(newPassword,oldPassword,user_id).then(date => {
+            onHide()
+            setOldPassword('')
+            setNewPassword('')
+            setConfirmPassword('')
+        })
     }
 
     return (
@@ -30,30 +50,30 @@ const ModalChangePassword = ({show,onHide,}) => {
                     <Form.Label className='font-s-18' >Старый пароль</Form.Label>
                     <Form.Control
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={oldPassword}
+                        onChange={ e => setOldPassword(e.target.value)}
                     />
                 </Form.Group>
                 <Form.Group controlId="formNewPassword" className='mb-3'>
                     <Form.Label className='font-s-18' >Новый пароль</Form.Label>
                     <Form.Control
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={newPassword}
+                        onChange={ e => setNewPassword(e.target.value)}
                     />
                 </Form.Group>
                 <Form.Group controlId="formConfirmPassword" className='mb-5'>
                     <Form.Label className='font-s-18' >Подтвердите пароль</Form.Label>
                     <Form.Control
                         className='my-form-control'
-                        value={value}
-                        onChange={ e => setValue(e.target.value)}
+                        value={confirmPassword}
+                        onChange={ e => setConfirmPassword(e.target.value)}
                     />
                 </Form.Group>
                 <Button
                     className='my-button w-100 p-2 font-s-18 mb-1'
                     onClick={() => handlerBtn()}
-                >Закрыть</Button>
+                >Изменить пароль</Button>
             </Modal.Body>
         </Modal>
     );

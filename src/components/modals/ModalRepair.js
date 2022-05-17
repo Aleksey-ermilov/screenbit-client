@@ -4,9 +4,11 @@ import {Button, Form, Modal} from "react-bootstrap";
 
 import ModalAuth from "./ModalAuth";
 import {setComplexRepair, setSimpleRepair} from "../../store/app/actionApp";
+import {httpRepair} from "../../http/userAPI";
+import {setUser} from "../../store/user/actionUser";
 
-const ModalRepair = ({show,onHide,}) => {
-    const isAuth = useSelector((state) => state.user.isAuth)
+const ModalRepair = ({os,show,onHide,}) => {
+    const {isAuth,user} = useSelector((state) => state.user)
     const complexRepair = useSelector((state) => state.app.complexRepair)
     const simpleRepair = useSelector((state) => state.app.simpleRepair)
 
@@ -22,10 +24,20 @@ const ModalRepair = ({show,onHide,}) => {
         if(!isAuth){
             setIsShowModalAuth(true)
         }else {
-            onHide()
-            setProblem('')
-            setBrand('')
-            setDevice('')
+            const repair = {
+                device,brand,problem,os,
+                simpleRepair: simpleRepair.filter(item => item.selected),
+                complexRepair: complexRepair.filter(item => item.selected)
+            }
+            httpRepair(repair,user.user_id).then( data => {
+                dispatch(setUser({...user,repair_status:data.repair }))
+                onHide()
+                setProblem('')
+                setBrand('')
+                setDevice('')
+                repair.simpleRepair.forEach( item => dispatch(setSimpleRepair(item.id)) )
+                repair.complexRepair.forEach( item =>dispatch(setComplexRepair(item.id)) )
+            })
         }
     }
 

@@ -21,7 +21,7 @@ import {addCart, setCartClickIcon} from "../store/user/actionUser";
 const HistoryProduct = () => {
     const navigate = useNavigate();
 
-    const {cart: carts} = useSelector( state => state.user)
+    const {cart: carts,user: {history_order}} = useSelector( state => state.user)
     const dispatch = useDispatch()
 
     const handlerCounter = (id,count) => {
@@ -52,11 +52,10 @@ const HistoryProduct = () => {
 
             <div className='head-margin-80'>
                 {
-                    historyProduct.length ? historyProduct.map( item =>
+                    history_order.length ? history_order.map( item =>
                         <Card
-
                             className='secondary shadow-mine m-3'
-                            key={item.product_id}
+                            key={item.order_id}
                         >
                             <Card.Body>
                                 <div className='d-flex '>
@@ -64,10 +63,10 @@ const HistoryProduct = () => {
                                         onClick={()=> handlerProductCard(item.product_id)}
                                         height={100}
                                         style={{width: '100px'}}
-                                        src={item.img[0]}
+                                        src={`${process.env.REACT_APP_API_URL}${item.img[0]}`}
                                         className='img-favorites'
                                     />
-                                    <div>
+                                    <div className='ms-3'>
                                         <Card.Text className='font-s-14 title-favorites' >{item.name}</Card.Text>
                                         <Card.Text className='font-s-12 desc-favorites'>{handlerText(item.desc)}</Card.Text>
                                     </div>

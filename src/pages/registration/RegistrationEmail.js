@@ -2,7 +2,7 @@ import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {Button} from "react-bootstrap";
 
-import { REPAIR_ROUTER} from "../../consts";
+import {REGISTRATION_PHONE_PASSWORD_ROUTER} from "../../consts";
 
 import Header from "../../components/Header";
 
@@ -10,7 +10,7 @@ const RegistrationEmail = () => {
     const navigate = useNavigate();
 
     const handlerBtn = () => {
-        navigate(REPAIR_ROUTER)
+        navigate(REGISTRATION_PHONE_PASSWORD_ROUTER)
     }
 
     return (

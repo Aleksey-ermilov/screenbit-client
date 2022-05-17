@@ -4,31 +4,17 @@ import {
     SET_FAVORITES,
     ADD_CART,
     DELETE_CART,
-    ADD_MESSAGE
+    ADD_MESSAGE,
+    SET_AUTH,
+    SET_USER, FETCH_FAVORITES, FETCH_CART, SET_ADDRESSES, DELETE_ADDRESS, SELECTED_ADDRESS
 } from './types'
 import imgDefaultImg from "../../icons/png/img-default-user-2.png";
 import phone from "../../icons/png/img-phone.png";
 
 const initialState = {
-    isAuth: true,
-    user: {
-        id: '2',
-        name: 'Вася',
-        lastname: 'Иванов',
-        patronymic: 'Висарионович',
-        gender: 'Мужской',
-        birthday: '15.02.1998',
-        user_id: 'auth_2',
-        phone: '8 800 800 88 88',
-        email: 'email@email.com',
-        fullName: 'Иванов Вася Висарионович',
-        addresses: '',
-        img: imgDefaultImg,// '56a96121-033a-41af-9f4c-2c5602fdc4e6.png'
-        favorites: [],
-        cart: [],
-        history_order: [],
-        order_status: []
-    },
+    isAuth: false,
+    user: null,
+    selectedAddress: null,
     messages: [
         {
             id:'1',
@@ -254,22 +240,6 @@ export const userReducer = (state = initialState, action) => {
                 return [...state.cart, {...action.payload.cart, count: action.payload.count}]
             })()
         }
-        case SET_FAVORITES: return {
-            ...state, favorites: (() => {
-                if(state.favorites.find( item => item.product_id === action.payload.favorite.product_id)){
-                    return state.favorites.filter( item => item.product_id !== action.payload.favorite.product_id)
-                }
-                return [...state.favorites, {...action.payload.favorite, count: action.payload.count}]
-            })()
-        }
-        case SET_COUNT_FAVORITE: return {
-            ...state, favorites: state.favorites.map( item => {
-                if (item.product_id === action.payload.id){
-                    return { ...item, count: action.payload.count}
-                }
-                return item
-            })
-        }
         case ADD_CART: return {
             ...state, cart: (() => {
                 if(state.cart.find( item => item.product_id === action.payload.item.product_id)){
@@ -286,6 +256,22 @@ export const userReducer = (state = initialState, action) => {
         case DELETE_CART: return {
             ...state, cart: state.cart.filter( item => item.product_id !== action.payload)
         }
+        case SET_FAVORITES: return {
+            ...state, favorites: (() => {
+                if(state.favorites.find( item => item.product_id === action.payload.favorite.product_id)){
+                    return state.favorites.filter( item => item.product_id !== action.payload.favorite.product_id)
+                }
+                return [...state.favorites, {...action.payload.favorite, count: action.payload.count}]
+            })()
+        }
+        case SET_COUNT_FAVORITE: return {
+            ...state, favorites: state.favorites.map( item => {
+                if (item.product_id === action.payload.id){
+                    return { ...item, count: action.payload.count}
+                }
+                return item
+            })
+        }
         case ADD_MESSAGE: return {
             ...state, messages: state.messages.map( item => {
                 if (item.id === action.payload.id){
@@ -295,9 +281,50 @@ export const userReducer = (state = initialState, action) => {
                 return item
             })
         }
+        case SET_AUTH: return {
+                ...state, isAuth: action.payload
+        }
+        case SET_USER: return {
+            ...state, user: action.payload
+        }
+        case FETCH_FAVORITES: return {
+            ...state, favorites: action.payload
+        }
+        case FETCH_CART: return {
+            ...state, cart: action.payload
+        }
+        case SET_ADDRESSES: return {
+            ...state, user: {...state.user, addresses: action.payload}
+        }
+        case DELETE_ADDRESS: return {
+            ...state, user: {...state.user, addresses: state.user.addresses.filter( item => item.id !== action.payload) }
+        }
+        case SELECTED_ADDRESS: return {
+            ...state, selectedAddress: action.payload
+        }
         // case SET_FAVORITES: return {
         //     ...state, favorites: action.payload
         // }
         default: return state
     }
 }
+/*
+
+const user =  {
+    id: '2',
+    name: 'Вася',
+    lastname: 'Иванов',
+    patronymic: 'Висарионович',
+    gender: 'Мужской',
+    birthday: '15.02.1998',
+    user_id: 'auth_2',
+    phone: '8 800 800 88 88',
+    email: 'email@email.com',
+    fullName: 'Иванов Вася Висарионович',
+    addresses: '',
+    img: imgDefaultImg,// '56a96121-033a-41af-9f4c-2c5602fdc4e6.png'
+    favorites: [],
+    cart: [],
+    history_order: [],
+    order_status: []
+}*/
