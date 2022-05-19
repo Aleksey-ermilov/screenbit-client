@@ -8,223 +8,12 @@ import {
     SET_AUTH,
     SET_USER, FETCH_FAVORITES, FETCH_CART, SET_ADDRESSES, DELETE_ADDRESS, SELECTED_ADDRESS
 } from './types'
-import imgDefaultImg from "../../icons/png/img-default-user-2.png";
-import phone from "../../icons/png/img-phone.png";
 
 const initialState = {
     isAuth: false,
     user: null,
     selectedAddress: null,
-    messages: [
-        {
-            id:'1',
-            product_id: 'prod_1',
-            imgProduct: phone,
-            user_id: 'auth_2',
-            admin_id: 'admin_15',
-            actual: true,
-            date: Date.now(),
-            subject: 'Apple 14 Apple 14 Apple 14 Apple 14 Apple 14 Apple 14 Apple 14',
-            type: 'repair',
-            message: [
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_2',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_15',
-                    mes: 'Тебе чего'
-                },
-
-            ]
-        },
-        {
-            id:'2',
-            product_id: 'prod_3',
-            imgProduct: phone,
-            user_id: 'auth_1',
-            admin_id: 'admin_1',
-            actual: true,
-            date: Date.now(),
-            subject: 'Samsung A51',
-            type: 'repair',
-            message: [
-                {
-                    id: 'auth_1',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'auth_1',
-                    mes: 'Есть чё?'
-                },
-                {
-                    id: 'admin_1',
-                    mes: 'Привет'
-                },
-                {
-                    id: 'admin_1',
-                    mes: 'Есть'
-                },
-                {
-                    id: 'admin_1',
-                    mes: 'Тебе чего'
-                },
-            ]
-        },
-    ],
+    messages: [],
     favorites: [],
     cart: [],
     error: null
@@ -328,3 +117,214 @@ const user =  {
     history_order: [],
     order_status: []
 }*/
+
+/*const messages = [
+    {
+        id:'1',
+        product_id: 'prod_1',
+        imgProduct: phone,
+        user_id: 'auth_2',
+        admin_id: 'admin_15',
+        actual: true,
+        date: Date.now(),
+        subject: 'Apple 14 Apple 14 Apple 14 Apple 14 Apple 14 Apple 14 Apple 14',
+        type: 'repair',
+        message: [
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_2',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_15',
+                mes: 'Тебе чего'
+            },
+
+        ]
+    },
+    {
+        id:'2',
+        product_id: 'prod_3',
+        imgProduct: phone,
+        user_id: 'auth_1',
+        admin_id: 'admin_1',
+        actual: true,
+        date: Date.now(),
+        subject: 'Samsung A51',
+        type: 'repair',
+        message: [
+            {
+                id: 'auth_1',
+                mes: 'Привет'
+            },
+            {
+                id: 'auth_1',
+                mes: 'Есть чё?'
+            },
+            {
+                id: 'admin_1',
+                mes: 'Привет'
+            },
+            {
+                id: 'admin_1',
+                mes: 'Есть'
+            },
+            {
+                id: 'admin_1',
+                mes: 'Тебе чего'
+            },
+        ]
+    },
+]*/
