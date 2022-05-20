@@ -60,10 +60,13 @@ const Repair = () => {
         return () => window.removeEventListener("transitionend", handler);
     }, [])
 
-    const onClick = e => {
+    const onClick = async e => {
         e.preventDefault();
         if (promptInstall) {
-            promptInstall.prompt();
+            const a = await promptInstall.prompt();
+            if (a.outcome === 'accepted'){
+                setPromptInstall(null)
+            }
         }else{
             return;
         };
@@ -84,7 +87,7 @@ const Repair = () => {
                     </div>
                     <div className='d-flex align-items-center'>
 
-                        <Button className='me-3 my-button' onClick={(e) => onClick(e)}>Скачать</Button>
+                        { promptInstall && <Button className='me-3 my-button' onClick={(e) => onClick(e)}>Скачать</Button>}
 
                         <div onClick={() => navigate(USER_ROUTER)} >
                             <Person height={15} width={15} />
