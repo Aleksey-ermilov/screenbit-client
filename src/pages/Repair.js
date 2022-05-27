@@ -56,20 +56,22 @@ const Repair = () => {
             e.preventDefault();
             setPromptInstall(e);
         };
+        const handlerAppInstalled = (e) => {
+            setPromptInstall(null)
+        }
         window.addEventListener("beforeinstallprompt", handler);
-        return () => window.removeEventListener("transitionend", handler);
+        window.addEventListener('appinstalled', handlerAppInstalled);
+        return () => {
+            window.removeEventListener("transitionend", handler);
+            window.removeEventListener("appinstalled", handlerAppInstalled);
+        }
     }, [])
 
     const onClick = async e => {
         e.preventDefault();
         if (promptInstall) {
-            const a = await promptInstall.prompt();
-            if (a.outcome === 'accepted'){
-                setPromptInstall(null)
-            }
-        }else{
-            return;
-        };
+            promptInstall.prompt();
+        }
     };
 
     const handlerOrderRepair = title => {

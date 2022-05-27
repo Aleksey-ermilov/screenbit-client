@@ -160,7 +160,7 @@ const ProductCard = () => {
                     {
                         showInfo === 'characteristics' &&
                             <div>
-                                <Characteristics characteristics={characteristics}/>
+                                <Characteristics characteristics={product.characteristics}/>
                             </div>
                     }
                     {
@@ -214,4 +214,4 @@ const ProductCard = () => {
 
 export default ProductCard;
 
-const characteristics = [["Внешний вид",[["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],["Внешний вид", [["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],]
+// const characteristics = [["Внешний вид",[["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],["Внешний вид", [["Цвет","Черный"],["Материал крышки","Алюминий"],["Материал корпуса","Пластик"]],],]
