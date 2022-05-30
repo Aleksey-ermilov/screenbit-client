@@ -59,7 +59,7 @@ const Ordering = () => {
         }).finally(() => setLoading(false))
     }
 
-    const total = carts && (carts.reduce((partial_sum, a) => partial_sum + (Number(a.price)* +a.count),0))
+    const total = carts && (carts.reduce((partial_sum, a) => partial_sum + (Number(a.price.replace(/[^\d]/g, ''))* +a.count),0))
 
     if (loading){
         return <Loading />
@@ -147,5 +147,5 @@ export default Ordering;
 }*/
 const payment = {
     company: 'Google Pay',
-    method: 'СПБ Оплата',
+    method: 'СБП Оплата',
 }
