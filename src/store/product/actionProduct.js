@@ -5,6 +5,7 @@ import {
     SEARCH_PRODUCTS,
     SET_PRODUCT,
     SET_SIMILAR_PRODUCTS,
+    SET_REVIEW_PRODUCTS
 }
     from './types'
 
@@ -53,13 +54,24 @@ export function fetchProducts (category) {
 
 const compareProducts = (obj,compare,products) => {
     if(obj.id === '2'){
-        return  products.sort((a,b) => +a[compare] - +b[compare])
+        if(obj.type === 'updatedAt'){
+            return  products.sort((a,b) => +new Date(a[compare]) - +new Date(b[compare]))
+        }else {
+            return  products.sort((a,b) => +a[compare] - +b[compare])
+        }
     }
     if(obj.id === '1'){
-        return products.sort((a,b) => +b[compare] - +a[compare])
+        if(obj.type === 'updatedAt'){
+            return products.sort((a,b) => +new Date(b[compare]) - +new Date(a[compare]))
+        }else {
+            return products.sort((a,b) => +b[compare] - +a[compare])
+        }
     }
 }
 
+export function setReviewProduct (review,product_id) {
+    return {type: SET_REVIEW_PRODUCTS, payload: {review,product_id}}
+}
 /*
 export function setError (error) {
     return {type: SET_ERROR, payload: error}

@@ -37,7 +37,7 @@ const Products = () => {
 
     useEffect( () => {
         getProducts().then( data => {
-            dispatch(setProducts(data.rows))
+            dispatch(setProducts(data.rows.filter( item => item.active)))
         }).finally(() => setLoading(false))
     },[])
 

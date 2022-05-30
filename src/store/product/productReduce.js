@@ -1,5 +1,5 @@
 import {
-    SET_PRODUCTS, SELECTED_CATEGORIES, SET_SORT, SEARCH_PRODUCTS, SET_PRODUCT, SET_SIMILAR_PRODUCTS
+    SET_PRODUCTS, SELECTED_CATEGORIES, SET_SORT, SEARCH_PRODUCTS, SET_PRODUCT, SET_SIMILAR_PRODUCTS, SET_REVIEW_PRODUCTS
 } from './types'
 
 import phone from "../../icons/png/img-phone.png";
@@ -11,8 +11,8 @@ const initialState = {
     sort: {name: 'Дорогие', id: '1',type:'price'},
     search: '',
     sortNewer: [
-        {name: 'Новые', id: '1',type:'date'},
-        {name: 'Старые', id: '2',type:'date'},
+        {name: 'Новые', id: '1',type:'updatedAt'},
+        {name: 'Старые', id: '2',type:'updatedAt'},
     ],
     sortPrice:  [
         {name: 'Дорогие', id: '1',type:'price'},
@@ -26,9 +26,7 @@ const initialState = {
     ],
     product: {},
     similarProducts: [],
-    products: [
-
-    ],
+    products: [],
 }
 
 export const productReducer = (state = initialState, action) => {
@@ -55,6 +53,15 @@ export const productReducer = (state = initialState, action) => {
         }
         case SEARCH_PRODUCTS: return {
             ...state, search: action.payload
+        }
+        case SET_REVIEW_PRODUCTS: return {
+            ...state, products: state.products.map(item => {
+                if (item.product_id === action.payload.product_id){
+                    return {...item, reviews: [action.payload.review, ...item.reviews]}
+                }
+                return item
+            }),
+            product: {...state.product, reviews: [action.payload.review, ...state.product.reviews]}
         }
         default: return state
     }

@@ -17,11 +17,11 @@ import {CartActiveSvg as NoCart} from "../icons/svgComponents/CartActiveSvg";
 import {CART_ROUTER, LIST_MAP_ROUTER, PRODUCT_CARD_ROUTER, USER_ROUTER} from "../consts";
 
 import {setCartClickIcon, setFavorites,addCart} from "../store/user/actionUser";
-import {setProduct, setSimilarProducts} from '../store/product/actionProduct'
+import {setProduct, setReviewProduct, setSimilarProducts} from '../store/product/actionProduct'
 
 import Loading from "./Loading";
 
-import {getProduct} from '../http/productApi'
+import {getProduct, httpSetReviewProduct} from '../http/productApi'
 import Characteristics from "../components/Characteristics";
 import {httpAddCart, httpCartByIconCart, httpFavorites} from "../http/userAPI";
 
@@ -71,6 +71,13 @@ const ProductCard = () => {
                 {
                     product_id: id,
                 }
+        })
+    }
+
+    const handlerReview = (review) => {
+        const newProd = {...product, reviews: [review, ...product.reviews]}
+        httpSetReviewProduct(newProd).then(date => {
+            dispatch(setReviewProduct(review,product_id))
         })
     }
 
@@ -207,7 +214,12 @@ const ProductCard = () => {
                 </div>
             </div>
             <ModalCharacteristics characteristics={product.characteristics} show={isShowCharacteristics} onHide={() => setIsShowCharacteristics(false)} />
-            <ModalReviews reviews={product.reviews} show={isShowReviews} onHide={() => setIsShowReviews(false)} />
+            <ModalReviews
+                setReview={handlerReview}
+                reviews={product.reviews}
+                show={isShowReviews}
+                onHide={() => setIsShowReviews(false)}
+            />
         </div>
     );
 };

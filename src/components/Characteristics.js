@@ -1,4 +1,5 @@
 import React from 'react';
+import {Row,Col} from "react-bootstrap";
 
 const Characteristics = ({characteristics}) => {
     return (
@@ -12,10 +13,10 @@ const Characteristics = ({characteristics}) => {
                                 {
                                     item[1].map( (char,i) => {
                                         return (
-                                            <div className='font-s-14 d-flex justify-content-between ' key={i}>
-                                                <div>{char[0]}</div>
-                                                <div>{char[1]}</div>
-                                            </div>
+                                            <Row className='font-s-14 d-flex justify-content-between ' key={i}>
+                                                <Col>{char[0]}</Col>
+                                                <Col>{char[1]}</Col>
+                                            </Row>
                                         )
                                     })
                                 }
