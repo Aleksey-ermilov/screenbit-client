@@ -5,6 +5,7 @@ import {useSelector,useDispatch} from "react-redux";
 import ModalAuth from "./ModalAuth";
 
 import DefaultUserSvg from "../../icons/svgComponents/DefaultUserSvg";
+import {setError} from "../../store/app/actionApp";
 
 const ModalReviews = ({show,onHide,reviews,setReview}) => {
     const {isAuth,user} = useSelector( state => state.user)
@@ -17,16 +18,20 @@ const ModalReviews = ({show,onHide,reviews,setReview}) => {
     const handlerFieldMessage = e => {
         if (e.key === 'Enter'){
             if(isAuth){
-                const review = {
-                    user: {
-                        img: user.img[0],
-                        user_id:user.user_id,
-                        fullName: user.name
-                    },
-                    message: value
+                if (value.trim()){
+                    const review = {
+                        user: {
+                            img: user.img[0],
+                            user_id:user.user_id,
+                            fullName: user.name
+                        },
+                        message: value
+                    }
+                    setReview(review)
+                    setValue('')
+                }else {
+                    dispatch(setError('Необходимо оставить отзыв'))
                 }
-                setReview(review)
-                setValue('')
             }else {
                 setIsShowModalAuth(true)
             }

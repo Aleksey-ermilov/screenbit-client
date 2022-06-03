@@ -13,26 +13,31 @@ const ModalChangePassword = ({show,onHide,}) => {
     const [newPassword,setNewPassword] = useState('')
     const [confirmPassword,setConfirmPassword] = useState('')
 
-    const handlerBtn = () => {
-        if (!(oldPassword.trim() && newPassword.trim() && confirmPassword.trim())){
-            //error!!
-            console.log('fields not empty')
-            return
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            if(newPassword !== confirmPassword){
+                dispatch(setError('Поле "Новый проль" и "Подтвердите пароль" не равны'))
+                return
+            }
+            httpChangePassword(newPassword,oldPassword,user_id).then(date => {
+                onHide()
+                setOldPassword('')
+                setNewPassword('')
+                setConfirmPassword('')
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
+            })
+
+            setValidated(false);
         }
-        if(newPassword !== confirmPassword){
-            //error
-            console.log('password not equal')
-            return
-        }
-        httpChangePassword(newPassword,oldPassword,user_id).then(date => {
-            onHide()
-            setOldPassword('')
-            setNewPassword('')
-            setConfirmPassword('')
-        }).catch(data => {
-            dispatch(setError(data.response.data.message))
-        })
-    }
+    };
 
     return (
         <Modal
@@ -50,34 +55,42 @@ const ModalChangePassword = ({show,onHide,}) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form.Group controlId="formOldPassword" className='mb-3'>
-                    <Form.Label className='font-s-18' >Старый пароль</Form.Label>
-                    <Form.Control
-                        className='my-form-control'
-                        value={oldPassword}
-                        onChange={ e => setOldPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formNewPassword" className='mb-3'>
-                    <Form.Label className='font-s-18' >Новый пароль</Form.Label>
-                    <Form.Control
-                        className='my-form-control'
-                        value={newPassword}
-                        onChange={ e => setNewPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formConfirmPassword" className='mb-5'>
-                    <Form.Label className='font-s-18' >Подтвердите пароль</Form.Label>
-                    <Form.Control
-                        className='my-form-control'
-                        value={confirmPassword}
-                        onChange={ e => setConfirmPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Button
-                    className='my-button w-100 p-2 font-s-18 mb-1'
-                    onClick={() => handlerBtn()}
-                >Изменить пароль</Button>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Form.Group controlId="formOldPassword" className='mb-3'>
+                        <Form.Label className='font-s-18' >Старый пароль</Form.Label>
+                        <Form.Control
+                            required
+                            className='my-form-control'
+                            value={oldPassword}
+                            onChange={ e => setOldPassword(e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">Поле "Старый пароль" не может быть пустым</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="formNewPassword" className='mb-3'>
+                        <Form.Label className='font-s-18' >Новый пароль</Form.Label>
+                        <Form.Control
+                            required
+                            className='my-form-control'
+                            value={newPassword}
+                            onChange={ e => setNewPassword(e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">Поле "Новый пароль" не может быть пустым</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="formConfirmPassword" className='mb-5'>
+                        <Form.Label className='font-s-18' >Подтвердите пароль</Form.Label>
+                        <Form.Control
+                            required
+                            className='my-form-control'
+                            value={confirmPassword}
+                            onChange={ e => setConfirmPassword(e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">Поле "Подтвердите пароль" не может быть пустым</Form.Control.Feedback>
+                    </Form.Group>
+                    <Button
+                        className='my-button w-100 p-2 font-s-18 mb-1'
+                        type='submit'
+                    >Изменить пароль</Button>
+                </Form>
             </Modal.Body>
         </Modal>
     );

@@ -15,22 +15,29 @@ const ModalAddAddress = ({show,onHide,}) => {
     const [text,setText] = useState('')
     const [loading,setLoading] = useState(false)
 
-    const handlerBtn = () => {
-       if(text.trim()){
-           setLoading(true)
-           httpAddAddress(text,user_id).then(date =>{
-               dispatch(setAddresses(date.addresses))
-               dispatch(selectedAddressAction(date.addresses[0]))
-               setText('')
-               onHide()
-           }).catch(data => {
-               dispatch(setError(data.response.data.message))
-           }).finally(() => setLoading(false))
-       }else {
-           //error!!!
-           console.log('Field address not empty')
-       }
-    }
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+
+            setLoading(true)
+            httpAddAddress(text,user_id).then(date =>{
+                dispatch(setAddresses(date.addresses))
+                dispatch(selectedAddressAction(date.addresses[0]))
+                setText('')
+                onHide()
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
+            }).finally(() => setLoading(false))
+
+            setValidated(false);
+        }
+    };
 
     if (loading){
         return <Loading />
@@ -52,15 +59,21 @@ const ModalAddAddress = ({show,onHide,}) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body >
-                <Form.Control
-                    className='my-form-control mb-4'
-                    value={text}
-                    onChange={ e => setText(e.target.value)}
-                />
-                <Button
-                    className='my-button w-100 p-2 font-s-18 mb-1'
-                    onClick={() => handlerBtn()}
-                >Добавить</Button>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <div className='mb-4'>
+                        <Form.Control
+                            required
+                            className='my-form-control'
+                            value={text}
+                            onChange={ e => setText(e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">Поле "Адрес" не может быть пустым</Form.Control.Feedback>
+                    </div>
+                    <Button
+                        className='my-button w-100 p-2 font-s-18 mb-1'
+                        type='submit'
+                    >Добавить</Button>
+                </Form>
             </Modal.Body>
         </Modal>
     );

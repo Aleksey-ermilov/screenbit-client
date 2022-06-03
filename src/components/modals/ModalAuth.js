@@ -20,23 +20,35 @@ const ModalAuth = ({show,onHide,}) => {
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
 
-    const handlerBtn = () => {
-        login({email, phone, password}).then( data => {
-            dispatch(setUser(data.user))
-            dispatch(setAuth(true))
-            dispatch(fetchFavorites(data.user.favorites ? data.user.favorites : []))
-            dispatch(fetchCart(data.user.cart ? data.user.cart : []))
-            dispatch( selectedAddressAction(data.user.addresses.length ? data.user.addresses[0] : null) )
-        }).catch( data => {
-            dispatch(setError(data.response.data.message))
-            navigate(REPAIR_ROUTER);
-        })
+    const [validated, setValidated] = useState(false);
 
-        setPassword('')
-        setEmail('')
-        setPhone('')
-        onHide()
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            login({email, phone, password}).then( data => {
+                dispatch(setUser(data.user))
+                dispatch(setAuth(true))
+                dispatch(fetchFavorites(data.user.favorites ? data.user.favorites : []))
+                dispatch(fetchCart(data.user.cart ? data.user.cart : []))
+                dispatch( selectedAddressAction(data.user.addresses.length ? data.user.addresses[0] : null) )
+            }).catch( data => {
+                dispatch(setError(data.response.data.message))
+                navigate(REPAIR_ROUTER);
+            })
+
+            setPassword('')
+            setEmail('')
+            setPhone('')
+            onHide()
+
+
+            setValidated(false);
+        }
+    };
 
     const handlerBtnRegistration = () => {
         navigate(REGISTRATION_ROUTER)
@@ -94,38 +106,53 @@ const ModalAuth = ({show,onHide,}) => {
                             className={isPhone ? 'unactive-text' : 'black-text'}
                         >Email</span>
                     </div>
-                    <Form>
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         {
-                            isPhone ? <Form.Control
-                                placeholder={'Номер телефона'}
-                                className='my-form-control mb-2'
-                                value={phone}
-                                onChange={e => setPhone(e.target.value)}
-                            />
+                            isPhone ?
+                                <div className='mb-2'>
+                                    <Form.Control
+                                        required
+                                        placeholder={'Номер телефона'}
+                                        className='my-form-control '
+                                        value={phone}
+                                        onChange={e => setPhone(e.target.value)}
+                                    />
+                                    <Form.Control.Feedback type="invalid">Поле "Номер телефона" не может быть пустым</Form.Control.Feedback>
+                                </div>
                             :
-                            <Form.Control
-                            placeholder={'Email'}
-                            className='my-form-control mb-2'
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                        />
+                            <div className='mb-2'>
+                                <Form.Control
+                                    required
+                                    type='email'
+                                    placeholder={'Email'}
+                                    className='my-form-control'
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                />
+                                <Form.Control.Feedback type="invalid">Поле "Email" не может быть пустым</Form.Control.Feedback>
+                            </div>
                             }
-                        <Form.Control
-                            placeholder={'Пароль'}
-                            className='my-form-control mb-2'
-                            type='password'
-                            value={password}
-                            onChange={ e => setPassword(e.target.value)}
-                        />
+                        <div className='mb-2'>
+                            <Form.Control
+                                required
+                                placeholder={'Пароль'}
+                                className='my-form-control'
+                                type='password'
+                                value={password}
+                                onChange={ e => setPassword(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">Поле "Пароль" не может быть пустым</Form.Control.Feedback>
+                        </div>
+
+                        <div
+                            onClick={handlerBtnPasswordRecovery}
+                            className='font-s-16 mb-3'
+                        >Восстановить доступ</div>
+                        <Button
+                            className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
+                            type='submit'
+                        >Войти</Button>
                     </Form>
-                    <div
-                        onClick={handlerBtnPasswordRecovery}
-                        className='font-s-16 mb-3'
-                    >Восстановить доступ</div>
-                    <Button
-                        className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
-                        onClick={handlerBtn}
-                    >Войти</Button>
                     <div onClick={handlerBtnRegistration} className='font-s-16 text-center mb-4'>Зарегистрироваться</div>
                 </Modal.Body>
             </Modal>

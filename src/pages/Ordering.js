@@ -54,8 +54,7 @@ const Ordering = () => {
 
     const orderingProduct = () => {
         if (!selectedAddress){
-            //error!!!
-            console.log('need address')
+            dispatch(setError('Адрес не выбран'))
             return
         }
         setLoading(true)

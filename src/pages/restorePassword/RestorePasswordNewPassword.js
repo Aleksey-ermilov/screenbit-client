@@ -19,23 +19,28 @@ const RestorePasswordNewPassword = () => {
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const handlerBtn = () => {
-        if (!(newPassword.trim() && confirmPassword.trim())){
-            //error!!
-            console.log('fields not empty')
-            return
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            if(newPassword !== confirmPassword){
+                dispatch(setError('Поле "Новый проль" и "Подтвердите пароль" не равны'))
+                return
+            }
+            httpPasswordRecoveryPassword(newPassword,login).then(date=>{
+                navigate(REPAIR_ROUTER)
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
+            })
+
+            setValidated(false);
         }
-        if(newPassword !== confirmPassword){
-            //error
-            console.log('password not equal')
-            return
-        }
-        httpPasswordRecoveryPassword(newPassword,login).then(date=>{
-            navigate(REPAIR_ROUTER)
-        }).catch(data => {
-            dispatch(setError(data.response.data.message))
-        })
-    }
+    };
 
     return (
         <div>
@@ -53,28 +58,33 @@ const RestorePasswordNewPassword = () => {
                     <div className='font-s-16 text-center mb-2 unactive-text'>
                         Создайте пароль
                     </div>
-                    <Form className='mb-3'>
+                    <Form className='mx-5' noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group controlId="formNewPassword" className='mb-3'>
                             <Form.Label className='font-s-16 unactive-text' >Новый пароль</Form.Label>
                             <Form.Control
+                                required
                                 className='my-form-control'
                                 value={newPassword}
                                 onChange={ e => setNewPassword(e.target.value)}
                             />
+                            <Form.Control.Feedback type="invalid">Поле "Новый пароль" не может быть пустым</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="formConfirmPassword" className='mb-5'>
                             <Form.Label className='font-s-16 unactive-text' >Подтвердите пароль</Form.Label>
                             <Form.Control
+                                required
                                 className='my-form-control'
                                 value={confirmPassword}
                                 onChange={ e => setConfirmPassword(e.target.value)}
                             />
+                            <Form.Control.Feedback type="invalid">Поле "Подтвердите пароль" не может быть пустым</Form.Control.Feedback>
                         </Form.Group>
+
+                        <Button
+                            className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
+                            type='submit'
+                        >Далее</Button>
                     </Form>
-                    <Button
-                        className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
-                        onClick={handlerBtn}
-                    >Далее</Button>
                 </div>
 
             </div>

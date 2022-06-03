@@ -18,18 +18,24 @@ const RestorePasswordCod = () => {
 
     const [value, setValue] = useState('')
 
-    const handlerBtn = () => {
-        if (!value.trim()){
-            //error!!!
-            console.log('field not empty')
-            return
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            httpPasswordRecoveryCode(value,login).then(date => {
+                navigate(RESTORE_PASSWORD_NEW_PASSWORD,{ state:{ login } })
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
+            })
+
+            setValidated(false);
         }
-        httpPasswordRecoveryCode(value,login).then(date => {
-            navigate(RESTORE_PASSWORD_NEW_PASSWORD,{ state:{ login } })
-        }).catch(data => {
-            dispatch(setError(data.response.data.message))
-        })
-    }
+    };
 
     return (
         <div>
@@ -47,17 +53,22 @@ const RestorePasswordCod = () => {
                     <div className='font-s-16 text-center mb-2 unactive-text'>
                         Введите код
                     </div>
-                    <Form className='mb-3'>
-                        <Form.Control
-                            className='my-form-control mb-2 font-s-14'
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
-                        />
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <div className='mb-3'>
+                            <Form.Control
+                                required
+                                className='my-form-control font-s-14'
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">Поле "Код" не может быть пустым</Form.Control.Feedback>
+                        </div>
+
+                        <Button
+                            className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
+                            type='submit'
+                        >Далее</Button>
                     </Form>
-                    <Button
-                        className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
-                        onClick={handlerBtn}
-                    >Далее</Button>
                 </div>
 
             </div>

@@ -20,17 +20,27 @@ const RegistrationPassword = () => {
 
     const [password, setPassword] = useState('')
 
-    const handlerBtn = () => {
+    const [validated, setValidated] = useState(false);
 
-        registrationAuth({phone,email,password,user_id}).then(data =>{
-            dispatch(setLoading(true))
-            dispatch(setUser(data.user))
-            dispatch(setAuth(true))
-            navigate(REPAIR_ROUTER)
-        }).catch(data => {
-            dispatch(setError(data.response.data.message))
-        }).finally(() => dispatch(setLoading(true)))
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            registrationAuth({phone,email,password,user_id}).then(data =>{
+                dispatch(setLoading(true))
+                dispatch(setUser(data.user))
+                dispatch(setAuth(true))
+                navigate(REPAIR_ROUTER)
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
+            }).finally(() => dispatch(setLoading(true)))
+            setValidated(false);
+        }
+    };
+
 
     return (
         <div>
@@ -48,18 +58,23 @@ const RegistrationPassword = () => {
                     <div className='font-s-16 text-center mb-2 unactive-text'>
                         Пароль
                     </div>
-                    <Form className='mb-3'>
-                        <Form.Control
-                            type={'password'}
-                            className='my-form-control mb-2 font-s-14'
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                        />
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <div className='mb-3'>
+                            <Form.Control
+                                required
+                                type={'password'}
+                                className='my-form-control font-s-14'
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">Поле "Пароль" не может быть пустым</Form.Control.Feedback>
+                        </div>
+
+                        <Button
+                            className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
+                            type='submit'
+                        >Далее</Button>
                     </Form>
-                    <Button
-                        className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
-                        onClick={handlerBtn}
-                    >Далее</Button>
                 </div>
 
             </div>

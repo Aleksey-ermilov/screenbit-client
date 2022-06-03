@@ -13,11 +13,22 @@ const Registration = () => {
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
 
-    const handlerBtn = () => {
-        isPhone ? navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{phone,} })
-            :
-            navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{email,} })
-    }
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+        }else {
+            isPhone ? navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{phone,} })
+                :
+                navigate(REGISTRATION_PHONE_PASSWORD_ROUTER,{ state:{email,} })
+
+            setValidated(false);
+        }
+    };
 
     return (
         <div>
@@ -43,29 +54,39 @@ const Registration = () => {
                             className={isPhone ? 'unactive-text' : 'black-text'}
                         >Email</span>
                     </div>
-                    <Form className='mb-3'>
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         {
-                            isPhone ? <Form.Control
-                                    type={'tel'}
-                                    placeholder={'Номер телефона'}
-                                    className='my-form-control mb-2 font-s-14'
-                                    value={phone}
-                                    onChange={e => setPhone(e.target.value)}
-                                />
+                            isPhone ?
+                                <div className='mb-3'>
+                                    <Form.Control
+                                        required
+                                        type={'tel'}
+                                        placeholder={'Номер телефона'}
+                                        className='my-form-control font-s-14'
+                                        value={phone}
+                                        onChange={e => setPhone(e.target.value)}
+                                    />
+                                    <Form.Control.Feedback type="invalid">Поле "Номер телефона" не может быть пустым</Form.Control.Feedback>
+                                </div>
                                 :
-                                <Form.Control
-                                    type={'email'}
-                                    placeholder={'Email'}
-                                    className='my-form-control mb-2 font-s-14'
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                />
+                                <div className='mb-3'>
+                                    <Form.Control
+                                        required
+                                        type={'email'}
+                                        placeholder={'Email'}
+                                        className='my-form-control  font-s-14'
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                    />
+                                    <Form.Control.Feedback type="invalid">Поле "Email" не может быть пустым</Form.Control.Feedback>
+                                </div>
                         }
+
+                        <Button
+                            className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
+                            type='submit'
+                        >Зарегистрироваться</Button>
                     </Form>
-                    <Button
-                        className='my-button  p-2 font-s-16 mb-2 d-block mx-auto btn-modal-login btn-radius'
-                        onClick={handlerBtn}
-                    >Зарегистрироваться</Button>
                 </div>
 
             </div>
