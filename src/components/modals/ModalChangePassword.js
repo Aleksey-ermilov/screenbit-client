@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Modal,Form} from "react-bootstrap";
-import {useSelector} from "react-redux";
+import {useSelector,useDispatch} from "react-redux";
 
 import {httpChangePassword} from "../../http/userAPI";
+import {setError} from "../../store/app/actionApp";
 
 const ModalChangePassword = ({show,onHide,}) => {
     const {user_id} = useSelector( state => state.user.user)
+    const dispatch = useDispatch()
 
     const [oldPassword,setOldPassword] = useState('')
     const [newPassword,setNewPassword] = useState('')
@@ -27,6 +29,8 @@ const ModalChangePassword = ({show,onHide,}) => {
             setOldPassword('')
             setNewPassword('')
             setConfirmPassword('')
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 

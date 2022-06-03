@@ -7,8 +7,8 @@ import Header from "../components/Header";
 
 import {HISTORY_PRODUCT_ROUTER, REPAIR_ROUTER} from "../consts";
 
-import {fetchCart, fetchFavorites, setAuth, setUser} from "../store/user/actionUser";
-import {setLoading} from "../store/app/actionApp";
+import {fetchCart, fetchFavorites, selectedAddressAction, setAuth, setUser} from "../store/user/actionUser";
+import {setError, setLoading} from "../store/app/actionApp";
 import {registrationUser} from "../http/userAPI";
 
 const Settings = () => {
@@ -21,11 +21,14 @@ const Settings = () => {
         dispatch(setUser(null))
         dispatch(fetchFavorites([]))
         dispatch(fetchCart([]))
+        dispatch(selectedAddressAction(null))
         localStorage.setItem('token',null)
         localStorage.setItem('user',null)
         dispatch(setLoading(true))
         registrationUser().then( data => {
             dispatch(setUser(data.user))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         }).finally(() => dispatch(setLoading(false)))
     }
 

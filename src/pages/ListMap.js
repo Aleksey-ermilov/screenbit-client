@@ -16,6 +16,7 @@ import AddressCard from "../components/AddressCard";
 import ModalAddAddress from "../components/modals/ModalAddAddress";
 import {httpDeleteAddress} from "../http/userAPI";
 import {deleteAddress} from "../store/user/actionUser";
+import {setError} from "../store/app/actionApp";
 
 const ListMap = () => {
     const { user_id,addresses } = useSelector(state => state.user.user)
@@ -28,6 +29,8 @@ const ListMap = () => {
     const handlerDelete = id => {
         httpDeleteAddress(id,user_id).then( date =>{
             dispatch(deleteAddress(id))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
     const handlerBtnAddAddress = () => {

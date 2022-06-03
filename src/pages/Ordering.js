@@ -16,8 +16,9 @@ import {REPAIR_ROUTER, USER_ROUTER} from "../consts";
 
 import Person from "../icons/svgComponents/Person";
 
-import {httpDeleteAddress, httpOrdering} from "../http/userAPI";
+import {httpChangeAddresses, httpDeleteAddress, httpOrdering} from "../http/userAPI";
 import {deleteAddress, deleteCart, setUser,selectedAddressAction} from "../store/user/actionUser";
+import {setError} from "../store/app/actionApp";
 
 const Ordering = () => {
 
@@ -38,11 +39,17 @@ const Ordering = () => {
         httpDeleteAddress(id,user.user_id).then(date => {
             dispatch(deleteAddress(id))
             dispatch(selectedAddressAction(date.addresses[0]))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         }).finally(() => setLoading(false))
     }
 
     const handlerSelectAddress = (address) => {
-        dispatch(selectedAddressAction(address))
+        httpChangeAddresses(address,user.user_id).then(data => {
+            dispatch(selectedAddressAction(address))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
+        })
     }
 
     const orderingProduct = () => {
@@ -56,6 +63,8 @@ const Ordering = () => {
             setIsShowModalSuccessPay(true)
             dispatch(setUser({...user, order_status: data.statusOrder,history_order:data.history}))
             cart.forEach(item => dispatch(deleteCart(item.product_id)) )
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         }).finally(() => setLoading(false))
     }
 

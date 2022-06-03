@@ -7,7 +7,7 @@ import {REPAIR_ROUTER} from "../../consts";
 
 import Header from "../../components/Header";
 import {registrationAuth} from "../../http/userAPI";
-import {setLoading} from "../../store/app/actionApp";
+import {setError, setLoading} from "../../store/app/actionApp";
 import {setAuth, setUser} from "../../store/user/actionUser";
 
 const RegistrationPassword = () => {
@@ -27,6 +27,8 @@ const RegistrationPassword = () => {
             dispatch(setUser(data.user))
             dispatch(setAuth(true))
             navigate(REPAIR_ROUTER)
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         }).finally(() => dispatch(setLoading(true)))
     }
 

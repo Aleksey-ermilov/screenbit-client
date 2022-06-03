@@ -24,6 +24,7 @@ import Loading from "./Loading";
 import {getProduct, httpSetReviewProduct} from '../http/productApi'
 import Characteristics from "../components/Characteristics";
 import {httpAddCart, httpCartByIconCart, httpFavorites} from "../http/userAPI";
+import {setError} from "../store/app/actionApp";
 
 const ProductCard = () => {
     const { product,similarProducts } = useSelector( state => state.product)
@@ -44,17 +45,24 @@ const ProductCard = () => {
         getProduct(product_id).then( data => {
             dispatch(setProduct(data))
             dispatch(setSimilarProducts(data.category))
+        }).catch(data => {
+            navigate(-1)
+            dispatch(setError(data.response.data.message))
         }).finally(() => setLoading(false))
     }, [product_id])
 
     const handlerAddFavorite = () => {
         httpFavorites({...product, count: 1},user_id).then(data => {
             dispatch(setFavorites(product,1))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
     const handlerAddCart = () => {
         httpCartByIconCart(product,1,user_id).then( data => {
             dispatch(setCartClickIcon(product,1))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
 
     }
@@ -62,6 +70,8 @@ const ProductCard = () => {
         httpAddCart(product,1,user_id).then(data=> {
             dispatch(addCart(product,1))
             navigate(CART_ROUTER)
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 
@@ -78,6 +88,8 @@ const ProductCard = () => {
         const newProd = {...product, reviews: [review, ...product.reviews]}
         httpSetReviewProduct(newProd).then(date => {
             dispatch(setReviewProduct(review,product_id))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 

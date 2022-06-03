@@ -16,6 +16,7 @@ import DeleteSvg from "../icons/svgComponents/DeleteSvg";
 
 import { addCart,deleteCart } from '../store/user/actionUser'
 import {httpDeleteCart} from "../http/userAPI";
+import {setError} from "../store/app/actionApp";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -31,6 +32,8 @@ const Cart = () => {
     const handlerDelete = (product_id) => {
         httpDeleteCart(product_id,user_id).then(data=>{
             dispatch(deleteCart(product_id))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 

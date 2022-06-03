@@ -11,6 +11,7 @@ body {
   font-weight: 400;
   --secondary: #FFFFFF;
   --main-color:linear-gradient(180deg, #DC6A00 0%, #F9321F 100%);
+  --error: #dc3545;
 }
 
 code {
@@ -32,6 +33,9 @@ code {
 }
 .color-text{
   color: #CECECE;
+}
+.color-error{
+  color: var(--error);
 }
 .secondary{
   background: #FFFFFF;

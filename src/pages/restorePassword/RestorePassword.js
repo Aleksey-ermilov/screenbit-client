@@ -1,12 +1,19 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {RESTORE_PASSWORD_COD} from "../../consts";
-import Header from "../../components/Header";
 import {Button, Form} from "react-bootstrap";
+import {useDispatch} from "react-redux";
+
+import Header from "../../components/Header";
+
+import {RESTORE_PASSWORD_COD} from "../../consts";
+
 import {httpPasswordRecoveryLogin} from "../../http/userAPI";
+
+import {setError} from "../../store/app/actionApp";
 
 const RestorePassword = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const [value, setValue] = useState('')
 
@@ -18,6 +25,8 @@ const RestorePassword = () => {
         }
         httpPasswordRecoveryLogin(value).then(date => {
             navigate(RESTORE_PASSWORD_COD,{ state:{ login: value } })
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 

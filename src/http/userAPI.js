@@ -58,6 +58,10 @@ export const httpAddAddress = async (address,user_id) => {
     const {data} = await $host.post('/api/user/addaddress', {address,user_id})
     return data
 }
+export const httpChangeAddresses = async (address,user_id) => {
+    const {data} = await $host.post('/api/user/chengeAddaddress', {address,user_id})
+    return data
+}
 export const httpDeleteAddress = async (address_id,user_id) => {
     const {data} = await $host.post('/api/user/deleteaddress', {address_id,user_id})
     return data
@@ -103,6 +107,10 @@ export const httpPasswordRecoveryPassword = async (password,login) => {
 
 export const httpAddImg = async (formDate) => {
     const {data} = await $authHost.post('/api/user/img', formDate)
+    return data
+}
+export const httpChangeImg = async (newImg,user_id) => {
+    const {data} = await $authHost.post('/api/user/changeImg', {newImg,user_id})
     return data
 }
 /*

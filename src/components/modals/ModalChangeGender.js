@@ -4,6 +4,7 @@ import {useSelector,useDispatch} from "react-redux";
 
 import {httpChangeGender} from "../../http/userAPI";
 import {setUser} from "../../store/user/actionUser";
+import {setError} from "../../store/app/actionApp";
 
 const ModalChangeGender = ({show,onHide,value = ''}) => {
     const {user} = useSelector( state => state.user)
@@ -15,6 +16,8 @@ const ModalChangeGender = ({show,onHide,value = ''}) => {
         httpChangeGender(text,user.user_id).then(date => {
             dispatch(setUser({...user,gender:text}))
             onHide()
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
 
     }

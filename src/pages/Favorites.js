@@ -16,6 +16,7 @@ import {setFavorites,setCountFavorite,addCart} from '../store/user/actionUser'
 
 import {handlerText} from '../helper'
 import {httpFavorites, httpFavoritesCount} from "../http/userAPI";
+import {setError} from "../store/app/actionApp";
 
 const Favorites = () => {
     const navigate = useNavigate();
@@ -27,12 +28,16 @@ const Favorites = () => {
     const handlerCounter = (product_id,count) => {
         httpFavoritesCount(product_id,count,user_id).then(data => {
             dispatch(setCountFavorite(product_id,count))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 
     const handlerDelete = (item) => {
         httpFavorites({...item, count: 1},user_id).then(data => {
             dispatch(setFavorites(item,1))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 

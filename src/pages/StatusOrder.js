@@ -53,7 +53,7 @@ const StatusOrder = () => {
                                                         </Row>
                                                         <Row className='d-flex justify-content-between'>
                                                             <Col xs={6}>Ремонт: {item.repair ? item.repair : 'Пока неизвестно'}</Col>
-                                                            <Col xs={6}>Дата доставки - {item.date_delivery ? new Date(item.date_delivery).toLocaleDateString('ru-RU',option) : 'Пока неизвестно'}</Col>
+                                                            <Col xs={6}>Дата доставки - {item.delivery_date ? new Date(item.delivery_date).toLocaleDateString('ru-RU',option) : 'Пока неизвестно'}</Col>
                                                         </Row>
                                                     </div>
                                                 </Container>

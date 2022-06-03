@@ -38,6 +38,10 @@ const User = () => {
 
     const navigate = useNavigate();
 
+    const handlerImage = (item) => {
+        setImg(item)
+    }
+
     return (
         <div>
             <Header className='header-bar'  >
@@ -45,7 +49,12 @@ const User = () => {
                     <div onClick={() => setIsShowModalImg(true)}>
                         {
                             user.img?.length ?
-                                <Image src={`${process.env.REACT_APP_API_URL}${img}`} height={60} width={60} /> :
+                                <Image
+                                    src={`${process.env.REACT_APP_API_URL}${img}`}
+                                    height={60}
+                                    width={60}
+                                />
+                                :
                                 <DefaultUserSvg height={60} width={60} />
                         }
                     </div>
@@ -110,7 +119,7 @@ const User = () => {
             <ModalChangePassword show={isShowModalPassword} onHide={() => setIsShowModalPassword(false)} />
             <ModalChangeGender show={isShowModalGender} onHide={() => setIsShowModalGender(false)} />
             <ModalChangeName show={isShowModalName} onHide={() => setIsShowModalName(false)} />
-            <ModalChangeImg getImg={(item) => setImg(item)} show={isShowModalImg} onHide={() => setIsShowModalImg(false)} />
+            <ModalChangeImg getImg={handlerImage} show={isShowModalImg} onHide={() => setIsShowModalImg(false)} />
         </div>
     );
 };

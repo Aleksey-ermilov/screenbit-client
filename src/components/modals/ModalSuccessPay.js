@@ -3,10 +3,6 @@ import {Modal} from "react-bootstrap";
 
 const ModalSuccessPay = ({show,onHide,}) => {
 
-    /*const handlerBtn = () => {
-        onHide()
-    }*/
-
     return (
         <Modal
             show={show}

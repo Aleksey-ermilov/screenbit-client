@@ -28,7 +28,7 @@ function App() {
                     dispatch(fetchFavorites(data.user.favorites ? data.user.favorites : []))
                     dispatch(fetchCart(data.user.cart ? data.user.cart : []))
                     dispatch(setAuth(true))
-                }).catch( () =>{
+                }).catch( () =>{  // может инициировать авторизацию?!
                     registrationUser().then( data => {
                         dispatch(setUser(data.user))
                     })

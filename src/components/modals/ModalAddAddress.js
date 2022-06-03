@@ -5,6 +5,7 @@ import {useSelector,useDispatch} from "react-redux";
 import {httpAddAddress} from "../../http/userAPI";
 import {selectedAddressAction, setAddresses} from "../../store/user/actionUser";
 import Loading from "../../pages/Loading";
+import {setError} from "../../store/app/actionApp";
 
 const ModalAddAddress = ({show,onHide,}) => {
 
@@ -22,6 +23,8 @@ const ModalAddAddress = ({show,onHide,}) => {
                dispatch(selectedAddressAction(date.addresses[0]))
                setText('')
                onHide()
+           }).catch(data => {
+               dispatch(setError(data.response.data.message))
            }).finally(() => setLoading(false))
        }else {
            //error!!!

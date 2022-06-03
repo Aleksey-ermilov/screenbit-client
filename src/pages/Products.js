@@ -20,6 +20,7 @@ import {setCartClickIcon, setFavorites} from '../store/user/actionUser'
 
 import {getProducts} from "../http/productApi";
 import {httpCartByIconCart, httpFavorites} from "../http/userAPI";
+import {setError} from "../store/app/actionApp";
 
 const Products = () => {
     const {
@@ -38,6 +39,8 @@ const Products = () => {
     useEffect( () => {
         getProducts().then( data => {
             dispatch(setProducts(data.rows.filter( item => item.active)))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         }).finally(() => setLoading(false))
     },[])
 
@@ -54,6 +57,8 @@ const Products = () => {
         e.stopPropagation()
         httpFavorites({...item, count: 1},user_id).then(data => {
             dispatch(setFavorites(item,1))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
 
     }
@@ -61,6 +66,8 @@ const Products = () => {
         e.stopPropagation()
         httpCartByIconCart(item,1,user_id).then( data => {
             dispatch(setCartClickIcon(item,1))
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
     const handlerSearchForm = e => {

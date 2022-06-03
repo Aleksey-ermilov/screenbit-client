@@ -3,7 +3,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {Button, Form, Modal} from "react-bootstrap";
 
 import ModalAuth from "./ModalAuth";
-import {setComplexRepair, setSimpleRepair} from "../../store/app/actionApp";
+import {setComplexRepair, setError, setSimpleRepair} from "../../store/app/actionApp";
 import {httpRepair} from "../../http/userAPI";
 import {setUser} from "../../store/user/actionUser";
 
@@ -37,6 +37,8 @@ const ModalRepair = ({os,show,onHide,}) => {
                 setDevice('')
                 repair.simpleRepair.forEach( item => dispatch(setSimpleRepair(item.id)) )
                 repair.complexRepair.forEach( item =>dispatch(setComplexRepair(item.id)) )
+            }).catch(data => {
+                dispatch(setError(data.response.data.message))
             })
         }
     }

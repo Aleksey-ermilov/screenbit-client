@@ -1,13 +1,12 @@
 import React from 'react';
-import {Button, Image, Modal} from "react-bootstrap";
+import { Image, Modal} from "react-bootstrap";
 import {useSelector,useDispatch} from "react-redux";
-
-import imgDefaultGallery from '../../icons/png/img-default-gallery.png'
 
 import EmptyListMes from "../EmptyListMes";
 
-import {httpAddImg} from "../../http/userAPI";
+import {httpAddImg, httpChangeImg} from "../../http/userAPI";
 import {setUser} from "../../store/user/actionUser";
+import {setError} from "../../store/app/actionApp";
 
 const ModalChangeImg = ({show,onHide,getImg}) => {
     const {user} = useSelector((state) => state.user)
@@ -21,12 +20,19 @@ const ModalChangeImg = ({show,onHide,getImg}) => {
 
         httpAddImg(formData).then(data => {
             dispatch(setUser({...user,img: data.img}))
+            getImg(data.img[0])
             onHide()
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
         })
     }
 
     const handlerImg = item => {
-        getImg(item)
+        httpChangeImg(item,user.user_id).then(data => {
+            getImg(item)
+        }).catch(data => {
+            dispatch(setError(data.response.data.message))
+        })
     }
 
     return (
@@ -64,29 +70,9 @@ const ModalChangeImg = ({show,onHide,getImg}) => {
                     />
                     Перейти в галерею
                 </label>
-                {/*<Button*/}
-                {/*    className=' btn-gallery w-100 p-3 font-s-18 mb-1'*/}
-                {/*    onClick={handlerBtnSave}*/}
-                {/*>Save</Button>*/}
             </Modal.Body>
         </Modal>
     );
 };
 
 export default ModalChangeImg;
-
-const imgs = [
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery,
-    imgDefaultGallery
-]

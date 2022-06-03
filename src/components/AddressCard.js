@@ -1,6 +1,5 @@
 import React from 'react';
-import {Card, Image} from "react-bootstrap";
-import imgDelete from "../icons/png/delete.png";
+import {Card} from "react-bootstrap";
 import DeleteSvg from "../icons/svgComponents/DeleteSvg";
 
 const AddressCard = ({item, remove}) => {

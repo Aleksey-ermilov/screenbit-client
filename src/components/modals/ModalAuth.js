@@ -7,7 +7,8 @@ import {REGISTRATION_ROUTER, REPAIR_ROUTER, RESTORE_PASSWORD} from "../../consts
 
 import {login} from "../../http/userAPI";
 
-import {fetchCart, fetchFavorites, setAuth, setUser} from "../../store/user/actionUser";
+import {fetchCart, fetchFavorites, selectedAddressAction, setAuth, setUser} from "../../store/user/actionUser";
+import {setError} from "../../store/app/actionApp";
 
 const ModalAuth = ({show,onHide,}) => {
     const navigate = useNavigate();
@@ -25,7 +26,9 @@ const ModalAuth = ({show,onHide,}) => {
             dispatch(setAuth(true))
             dispatch(fetchFavorites(data.user.favorites ? data.user.favorites : []))
             dispatch(fetchCart(data.user.cart ? data.user.cart : []))
-        }).catch( () => {
+            dispatch( selectedAddressAction(data.user.addresses.length ? data.user.addresses[0] : null) )
+        }).catch( data => {
+            dispatch(setError(data.response.data.message))
             navigate(REPAIR_ROUTER);
         })
 

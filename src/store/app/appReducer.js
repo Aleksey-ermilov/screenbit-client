@@ -1,7 +1,7 @@
 import {
     SET_COMPLEX_REPAIR,
     SET_SIMPLE_REPAIR,
-    SET_LOADING
+    SET_LOADING, SET_ERROR
 } from './types'
 
 const initialState = {
@@ -41,6 +41,9 @@ export const appReducer = (state = initialState, action) => {
         }
         case SET_LOADING: return {
             ...state, loading: action.payload
+        }
+        case SET_ERROR: return {
+            ...state, error: action.payload
         }
         default: return state
     }
